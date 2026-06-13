@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BlueCred — Verified Environmental Compliance Infrastructure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{url_for('static',filename='css/landing.css')}}" />
+</head>
+<body>
+
+  <!-- ======= NAVBAR ======= -->
+  <nav class="navbar">
+    <div class="container nav-inner">
+
+      <a href="#" class="nav-brand">
+        <div class="logo-mark">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="32" height="32" rx="6" fill="#1A56A0"/>
+            <path d="M8 16 C8 11.6 11.6 8 16 8 C18.8 8 21.3 9.4 22.8 11.6" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            <path d="M24 16 C24 20.4 20.4 24 16 24 C13.2 24 10.7 22.6 9.2 20.4" stroke="#4CAF82" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            <circle cx="16" cy="16" r="2.5" fill="white"/>
+            <circle cx="22.8" cy="11.6" r="1.8" fill="#4CAF82"/>
+            <circle cx="9.2" cy="20.4" r="1.8" fill="white"/>
+          </svg>
+        </div>
+        <span class="brand-text">BlueCred</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#roles">Roles</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="{{ url_for('auth.register') }}" class="btn-nav-secondary">Register as Auditor</a>
+        <a href="#" class="btn-nav-primary">Public Dashboard</a>
+      </div>
+
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#roles">Roles</a></li>
+      </ul>
+      <div class="mobile-actions">
+        <a href="/register" class="btn-nav-secondary">Auditor Login</a>
+        <a href="#" class="btn-nav-primary">Public Dashboard</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ======= HERO ======= -->
+  <section class="hero" id="home">
+    <div class="container hero-inner">
+
+      <!-- LEFT -->
+      <div class="hero-left">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Verified Environmental Data System
+        </div>
+        <h1 class="hero-title">
+          Blue<span class="title-accent">Cred</span>
+        </h1>
+        <p class="hero-tagline">Verified Environmental Compliance Infrastructure</p>
+        <p class="hero-desc">
+         A transparent platform that records industrial pollution data, verifies environmental compliance, and ensures trust through blockchain-secured records and intelligent analysis.
+        </p>
+        <div class="hero-btns">
+          <a href="#" class="btn-primary">Explore Public Records</a>
+          <a href="/login" class="btn-outline">Login as Auditor</a>
+        </div>
+      </div>
+
+      <!-- RIGHT — Dashboard Card -->
+      <div class="hero-right">
+        <div class="dashboard-card">
+          <div class="card-header">
+            <div class="card-header-left">
+              <span class="card-dot green"></span>
+              <span class="card-title">Industry Status</span>
+            </div>
+            <span class="card-live">● LIVE</span>
+          </div>
+
+          <div class="card-industry">
+            <div class="industry-avatar">LI</div>
+            <div>
+              <div class="industry-name">Leather Industries Ltd. Kanpur</div>
+              <div class="industry-id">REG-ID: IND-00482</div>
+            </div>
+          </div>
+
+          <div class="card-divider"></div>
+
+          <div class="card-rows">
+            <div class="card-row">
+              <span class="row-label">Pollution Level</span>
+              <span class="row-value moderate">Moderate</span>
+            </div>
+            <div class="card-row">
+              <span class="row-label">BlueCred Score</span>
+              <div class="score-wrap">
+                <div class="score-bar">
+                  <div class="score-fill" style="width: 86%"></div>
+                </div>
+                <span class="score-num">86 / 100</span>
+              </div>
+            </div>
+            <div class="card-row">
+              <span class="row-label">Last Audit</span>
+              <span class="row-value">12 Jun 2026</span>
+            </div>
+            <div class="card-row">
+              <span class="row-label">Verification</span>
+              <span class="row-value verified">✓ Verified</span>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <span>Report ID: <span class="mono">#AUD-20260612-0049</span></span>
+            <span class="card-footer-link">View Full Report →</span>
+          </div>
+        </div>
+
+        <!-- floating mini badges -->
+        <div class="float-badge float-top">
+          <span>🔒</span> Tamper-proof ledger
+        </div>
+        <div class="float-badge float-bottom">
+          <span>🧠</span> AI Risk: Low
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======= TRUST BANNER ======= -->
+  <div class="trust-banner">
+    <div class="container trust-inner">
+      <span class="trust-label">Trusted Environmental Data System</span>
+      <div class="trust-items">
+        <span>✓ Verified Audits</span>
+        <span>✓ Transparent Records</span>
+        <span>✓ Secure Data Integrity</span>
+        <span>✓ AI-Assisted Monitoring</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= POLLUTION IMAGE SECTION ======= -->
+  <section class="pollution-section">
+    <div class="container">
+      <div class="pollution-text">
+        <span class="section-eyebrow">THE REALITY ON THE GROUND</span>
+        <h2 class="pollution-heading">Industrial pollution is not an abstract risk — it is a daily reality for millions of people living near unmonitored facilities.</h2>
+      </div>
+      <div class="pollution-image-wrap">
+        <!-- Replace src with your own image when ready -->
+        <img
+          src="{{ url_for('static', filename='assets/image1.jpg') }}"
+          alt="Industrial pollution — smokestacks emitting pollutants"
+          class="pollution-img"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        />
+        <!-- Fallback placeholder shown if image fails -->
+        <div class="pollution-placeholder">
+          <div class="placeholder-inner">
+            <span class="placeholder-icon">🏭</span>
+            <p>Your pollution image goes here</p>
+            <p class="placeholder-sub">Recommended: 1200 × 600px, landscape rectangular</p>
+          </div>
+        </div>
+        <div class="image-overlay-label">
+          <span>📍 Monitored Zone — Data recorded on BlueCred Ledger</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= PROBLEM ======= -->
+  <section class="section bg-light" id="about">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">THE PROBLEM</span>
+        <h2 class="section-title">Why Environmental Data Needs Trust</h2>
+        <p class="section-desc">The current system fails at every level — fragmented, opaque, and always too slow.</p>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="prob-num">01</div>
+          <h3>Fragmented Records</h3>
+          <p>Pollution data exists across dozens of disconnected systems — state agencies, private firms, and compliance bodies cannot cross-verify records.</p>
+        </div>
+        <div class="problem-card">
+          <div class="prob-num">02</div>
+          <h3>Lack of Transparency</h3>
+          <p>Citizens living near industrial facilities have no way to independently access or verify what is being released into their environment.</p>
+        </div>
+        <div class="problem-card">
+          <div class="prob-num">03</div>
+          <h3>Delayed Detection</h3>
+          <p>Environmental damage is identified only after it has already occurred. Reactive systems cannot prevent harm — only document it after the fact.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= HOW IT WORKS ======= -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">THE PROCESS</span>
+        <h2 class="section-title">How BlueCred Works</h2>
+        <p class="section-desc">A four-step pipeline from field collection to public accountability.</p>
+      </div>
+
+      <div class="steps-track">
+        <div class="steps-line"></div>
+
+        <div class="steps-row">
+          <div class="step-item">
+            <div class="step-circle">1</div>
+            <div class="step-body">
+              <h3>Data Collection</h3>
+              <p>Certified auditors visit industrial sites and collect pollution readings using verified field instruments.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-circle">2</div>
+            <div class="step-body">
+              <h3>Verification</h3>
+              <p>Submitted data is cross-checked against site history, calibration records, and auditor credentials before acceptance.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-circle">3</div>
+            <div class="step-body">
+              <h3>Tamper-Proof Storage</h3>
+              <p>Each record is hashed and chained to previous entries. No record can be altered retroactively without breaking the chain.</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-circle">4</div>
+            <div class="step-body">
+              <h3>AI Analysis</h3>
+              <p>Machine learning models assess risk levels, detect anomalies, and predict future compliance based on verified historical data.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= FEATURES ======= -->
+  <section class="section bg-light" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">WHAT WE PROVIDE</span>
+        <h2 class="section-title">Built for accountability at every layer.</h2>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feat-icon">🔗</div>
+          <h3>Tamper-Proof Audit Records</h3>
+          <p>Every entry is cryptographically signed and chained. Historical data cannot be modified by anyone, including administrators.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon">📊</div>
+          <h3>Real-Time Pollution Tracking</h3>
+          <p>Live dashboards show current readings by region, industry type, and pollutant category — updated with every verified submission.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon">🧠</div>
+          <h3>AI-Powered Risk Detection</h3>
+          <p>Predictive models trained on verified data identify industries likely to exceed limits before violations occur.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon">🌍</div>
+          <h3>Public Transparency Dashboard</h3>
+          <p>No login required. Any citizen can access pollution records, audit histories, and compliance status for any monitored industry.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon">🏅</div>
+          <h3>BlueCred Compliance Score</h3>
+          <p>A standardised credibility score representing environmental responsibility — based entirely on verified audit data, not self-reporting.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon">🛡</div>
+          <h3>Auditor Identity Verification</h3>
+          <p>Every submission is cryptographically linked to a verified auditor credential — creating an unbreakable chain of custody.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= BLUECRED SCORE ======= -->
+  <section class="section score-section">
+    <div class="container score-inner">
+      <div class="score-left">
+        <span class="section-eyebrow">THE BLUECRED SCORE</span>
+        <h2 class="section-title">A credibility score built on verified evidence.</h2>
+        <p class="section-desc">The BlueCred Score is not self-declared. It is calculated from tamper-proof audit records, compliance history, and AI risk assessment — giving regulators, investors, and citizens a single number they can trust.</p>
+        <ul class="score-legend">
+          <li><span class="dot green"></span> 80–100 &nbsp; Excellent Performance</li>
+          <li><span class="dot amber"></span> 55–79 &nbsp;&nbsp; Moderate Risk</li>
+          <li><span class="dot red"></span> 0–54 &nbsp;&nbsp;&nbsp; High Risk — Review Required</li>
+        </ul>
+      </div>
+      <div class="score-right">
+        <div class="score-card">
+          <div class="sc-header">BlueCred Score</div>
+          <div class="sc-industry">Industry A — Sector: Chemical</div>
+          <div class="sc-gauge">
+            <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" class="gauge-svg">
+              <path d="M 20 100 A 80 80 0 0 1 180 100" stroke="#E8EDF2" stroke-width="16" fill="none" stroke-linecap="round"/>
+              <path d="M 20 100 A 80 80 0 0 1 180 100" stroke="#2ECC71" stroke-width="16" fill="none" stroke-linecap="round"
+                stroke-dasharray="251.2" stroke-dashoffset="33"/>
+            </svg>
+            <div class="gauge-label">
+              <span class="gauge-num">87</span>
+              <span class="gauge-sub">out of 100</span>
+            </div>
+          </div>
+          <div class="sc-rows">
+            <div class="sc-row">
+              <span>Environmental Performance</span>
+              <span class="sc-val green-text">Excellent</span>
+            </div>
+            <div class="sc-row">
+              <span>Risk Level</span>
+              <span class="sc-val green-text">Low</span>
+            </div>
+            <div class="sc-row">
+              <span>Last Verification</span>
+              <span class="sc-val">12 Jun 2026</span>
+            </div>
+            <div class="sc-row">
+              <span>Compliance Credits</span>
+              <span class="sc-val">1,240 pts</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= TRANSPARENCY DASHBOARD ======= -->
+  <section class="section bg-light dash-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">TRANSPARENCY DASHBOARD</span>
+        <h2 class="section-title">National Pollution Overview</h2>
+        <p class="section-desc">All figures drawn from verified audit records. Updated in real time as submissions are processed.</p>
+      </div>
+      <div class="dash-stats">
+        <div class="dash-stat">
+          <span class="dash-num">24,500</span>
+          <span class="dash-label">Industries Registered</span>
+        </div>
+        <div class="dash-divider"></div>
+        <div class="dash-stat">
+          <span class="dash-num">1,20,000</span>
+          <span class="dash-label">Verified Reports</span>
+        </div>
+        <div class="dash-divider"></div>
+        <div class="dash-stat">
+          <span class="dash-num red-text">340</span>
+          <span class="dash-label">High-Risk Industries</span>
+        </div>
+        <div class="dash-divider"></div>
+        <div class="dash-stat">
+          <span class="dash-num">98.4%</span>
+          <span class="dash-label">Data Integrity Rate</span>
+        </div>
+      </div>
+      <div class="dash-cta">
+        <a href="#" class="btn-primary">View Full Dashboard</a>
+        <span class="dash-note">No login required — data is public by design.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= ROLES ======= -->
+  <section class="section" id="roles">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">WHO USES BLUECRED</span>
+        <h2 class="section-title">Designed for every stakeholder.</h2>
+      </div>
+      <div class="roles-grid">
+        <div class="role-card">
+          <div class="role-top">
+            <span class="role-icon">🔬</span>
+            <h3>Auditors</h3>
+          </div>
+          <p>Certified inspectors who collect on-site pollution data and submit verified field records into the ledger.</p>
+          <a href="#" class="role-link">Auditor Login →</a>
+        </div>
+        <div class="role-card">
+          <div class="role-top">
+            <span class="role-icon">🏭</span>
+            <h3>Industries</h3>
+          </div>
+          <p>Manufacturing and energy entities whose emissions are monitored. Access your compliance record and BlueCred Score.</p>
+          <a href="#" class="role-link">Industry Portal →</a>
+        </div>
+        <div class="role-card">
+          <div class="role-top">
+            <span class="role-icon">👁</span>
+            <h3>Public</h3>
+          </div>
+          <p>Any citizen who wants to verify what industries near them are emitting. No account required — open by default.</p>
+          <a href="#" class="role-link">View Records →</a>
+        </div>
+        <div class="role-card">
+          <div class="role-top">
+            <span class="role-icon">⚖</span>
+            <h3>Authorities</h3>
+          </div>
+          <p>Regulatory bodies that analyse environmental trends, review flagged violations, and enforce compliance actions.</p>
+          <a href="#" class="role-link">Authority Access →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= FOOTER ======= -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="logo-mark small">
+            <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" rx="6" fill="#1A56A0"/>
+              <path d="M8 16 C8 11.6 11.6 8 16 8 C18.8 8 21.3 9.4 22.8 11.6" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+              <path d="M24 16 C24 20.4 20.4 24 16 24 C13.2 24 10.7 22.6 9.2 20.4" stroke="#4CAF82" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+              <circle cx="16" cy="16" r="2.5" fill="white"/>
+              <circle cx="22.8" cy="11.6" r="1.8" fill="#4CAF82"/>
+              <circle cx="9.2" cy="20.4" r="1.8" fill="white"/>
+            </svg>
+          </div>
+          <span class="brand-text">BlueCred</span>
+        </div>
+        <p class="footer-tagline">Transparent environmental monitoring for a sustainable future.</p>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-bottom">
+        <div class="footer-links">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Contact</a>
+          <a href="#">Documentation</a>
+          <a href="#">API Access</a>
+        </div>
+        <span class="footer-copy">© 2026 BlueCred. All records are public and permanent.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+      hamburger.classList.toggle('active');
+    });
+  </script>
+
+</body>
+</html>

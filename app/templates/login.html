@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BlueCred — Auditor Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{url_for('static',filename='css/login.css')}}"/>
+</head>
+<body>
+
+<div class="split-container">
+
+  <!-- LEFT COLUMN -->
+  <div class="col col-left">
+    <div class="col-inner">
+
+      <!-- Brand -->
+      <div class="brand">
+        <div class="logo-mark">
+          <svg width="38" height="38" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="32" height="32" rx="6" fill="#1A56A0"/>
+            <path d="M8 16 C8 11.6 11.6 8 16 8 C18.8 8 21.3 9.4 22.8 11.6" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            <path d="M24 16 C24 20.4 20.4 24 16 24 C13.2 24 10.7 22.6 9.2 20.4" stroke="#4CAF82" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            <circle cx="16" cy="16" r="2.5" fill="white"/>
+            <circle cx="22.8" cy="11.6" r="1.8" fill="#4CAF82"/>
+            <circle cx="9.2" cy="20.4" r="1.8" fill="white"/>
+          </svg>
+        </div>
+        <span class="brand-name">BlueCred</span>
+      </div>
+
+      <!-- Tagline -->
+      <p class="left-tagline">Verified Environmental Compliance Infrastructure</p>
+
+      <!-- Section 1: Auditor Functions -->
+      <div class="info-block">
+        <span class="block-label">AUDITOR FUNCTIONS</span>
+        <ul class="function-list">
+          <li>
+            <span class="fn-icon">📋</span>
+            <div>
+              <strong>Submit Pollution Reports</strong>
+              <p>Record verified on-site emission readings directly into the tamper-proof ledger.</p>
+            </div>
+          </li>
+          <li>
+            <span class="fn-icon">🔍</span>
+            <div>
+              <strong>Inspect Industrial Sites</strong>
+              <p>Conduct certified field inspections and attach supporting evidence to each audit entry.</p>
+            </div>
+          </li>
+          <li>
+            <span class="fn-icon">⚠</span>
+            <div>
+              <strong>Flag Compliance Violations</strong>
+              <p>Raise violation alerts that are immediately visible to regulatory authorities.</p>
+            </div>
+          </li>
+          <li>
+            <span class="fn-icon">📊</span>
+            <div>
+              <strong>Track Audit History</strong>
+              <p>Access a full chronological record of all submissions linked to your credentials.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Section 2: Verified Security -->
+      <div class="security-card">
+        <div class="security-header">
+          <span class="shield-icon">🛡</span>
+          <span class="block-label" style="margin-bottom:0;">VERIFIED SECURITY</span>
+        </div>
+        <p class="security-text">
+          Verified security through <strong>BlueCred team verified login credentials.</strong> Each auditor account is individually reviewed, credentialed, and cryptographically signed before activation. Unauthorized access attempts are logged and reported.
+        </p>
+        <div class="security-badges">
+          <span class="sec-badge">✓ Identity Verified</span>
+          <span class="sec-badge">✓ Encrypted Session</span>
+          <span class="sec-badge">✓ Audit Trail Logged</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DIVIDER -->
+  <div class="divider"></div>
+
+  <!-- RIGHT COLUMN -->
+  <div class="col col-right">
+    <div class="col-inner">
+
+      <!-- Header aligned with left brand -->
+      <div class="right-header">
+        <h2 class="form-title">Login as Auditor</h2>
+        <p class="form-subtitle">Access your verified auditor dashboard.</p>
+      </div>
+
+      <!-- Form Card -->
+      <div class="form-card">
+        <form  method="post" novalidate>
+
+          <div class="field-group">
+            <label for="blueId">Blue ID</label>
+            <input type="text" id="blueId" name="blueId" placeholder="Enter Blue ID" autocomplete="username" required/>
+          </div>
+
+          <div class="field-group">
+            <label for="bluePass">Blue Password</label>
+            <input type="password" id="bluePass" name="bluePass" placeholder="Blue Password" autocomplete="current-password" required/>
+          </div>
+
+          <button type="submit" class="btn-login">Login</button>
+
+        </form>
+      </div>
+
+      <!-- Secondary links -->
+      <div class="form-links">
+        <a href="#">Forgot password?</a>
+        <span class="link-sep">·</span>
+        <a href="/register">Register as auditor</a>
+      </div>
+
+      <!-- Info strip fills empty space -->
+      <div class="form-info-strip">
+        <div class="strip-row">
+          <span class="strip-icon">🔒</span>
+          <span>Your session is encrypted end-to-end. Credentials are never stored in plaintext.</span>
+        </div>
+        <div class="strip-row">
+          <span class="strip-icon">📋</span>
+          <span>Only BlueCred-verified auditors may log in. Contact admin if your account is pending.</span>
+        </div>
+        <div class="strip-row">
+          <span class="strip-icon">⚠</span>
+          <span>Repeated failed login attempts will temporarily lock your account for security.</span>
+        </div>
+      </div>
+
+      <!-- Back link -->
+      <a href="/" class="back-link">← Back to BlueCred</a>
+
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

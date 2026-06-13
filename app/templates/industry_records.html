@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Industry Records Test Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f6fb;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: #1f2937;
+      color: #fff;
+    }
+    .topbar .brand {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    .topbar .user-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .button-logout {
+      border: none;
+      background: #ef4444;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    .content {
+      max-width: 1000px;
+      margin: 24px auto;
+      padding: 0 24px 36px;
+    }
+    .panel {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 18px rgba(15, 23, 42, 0.08);
+      padding: 24px;
+    }
+    .panel h1 {
+      margin-top: 0;
+      font-size: 1.8rem;
+    }
+    .records-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 18px;
+    }
+    .records-table th,
+    .records-table td {
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .records-table th {
+      background: #f8fafc;
+      font-weight: 600;
+      color: #111827;
+    }
+    .records-table tr:nth-child(even) {
+      background: #f9fafb;
+    }
+    .status-pill {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: #fff;
+    }
+    .status-pill.active { background: #10b981; }
+    .status-pill.pending { background: #f59e0b; }
+    .status-pill.completed { background: #3b82f6; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Industry Records Test</div>
+    <div class="user-bar">
+      <div>Hello, <strong>{{username}}</strong></div>
+      <a class="button-logout" href="/logout">Logout</a>
+    </div>
+  </header>
+
+  <main class="content">
+    <section class="panel">
+      <h1>Random Industry Records</h1>
+      <p>Use this page to inspect sample records and verify layout.</p>
+
+      <table class="records-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Industry</th>
+            <th>Company</th>
+            <th>Region</th>
+            <th>Revenue</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>FinTech</td>
+            <td>BlueCred Capital</td>
+            <td>North America</td>
+            <td>$124M</td>
+            <td><span class="status-pill active">Active</span></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Energy</td>
+            <td>PulseGrid</td>
+            <td>Europe</td>
+            <td>$89M</td>
+            <td><span class="status-pill completed">Completed</span></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Healthcare</td>
+            <td>WellWave</td>
+            <td>Asia Pacific</td>
+            <td>$54M</td>
+            <td><span class="status-pill pending">Pending</span></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Retail</td>
+            <td>MarketLane</td>
+            <td>Latin America</td>
+            <td>$72M</td>
+            <td><span class="status-pill active">Active</span></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Manufacturing</td>
+            <td>ForgeWorks</td>
+            <td>Australia</td>
+            <td>$65M</td>
+            <td><span class="status-pill completed">Completed</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>
