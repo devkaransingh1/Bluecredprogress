@@ -351,3 +351,14 @@ body {
   .col-right { order: 1; }
   .security-card { margin-top: 0; }
 }
+
+.danger{
+  color: rgb(255, 0, 0);
+  font-family: var(--font);
+  font-weight: 400;
+}
+.info{
+  color: rgb(83, 236, 48);
+  font-family: var(--font);
+  font-weight: 400;
+}

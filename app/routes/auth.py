@@ -20,10 +20,9 @@ def login():
         auditor = Auditor.query.filter_by(blue_id=userId,password=userPassword).first()
         if auditor:
             session['auditor']=auditor.name
-            flash('Auditor credentials verification successful','success')
             return redirect(url_for('auth.industry_records',username = session['auditor']))
         else:
-            flash('Invalid credentials','danger')
+            flash('Invalid Blue ID or Password, Try again.','danger')
             return redirect(url_for('auth.login'))
     return render_template('login.html')
 
@@ -44,5 +43,9 @@ def industry_records():
 @auth_bp.route('/logout')
 def logout():
     session.pop('auditor',None)
-    flash('Auditor logged out','info')
+    flash('Auditor logged out successfully','info')
     return redirect(url_for('auth.login'))
+
+@auth_bp.route('/forgotpassword')
+def forgotpassword():
+    return render_template('forgotpassword.html')

@@ -13,7 +13,9 @@ def create_app():
     db.init_app(app)
 
     from app.routes.auth import auth_bp
+    from app.routes.indus import indus_bp
     app.register_blueprint(auth_bp)
+    app.register_blueprint(indus_bp)
 
 
     return app

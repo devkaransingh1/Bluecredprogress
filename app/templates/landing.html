@@ -33,12 +33,11 @@
         <li><a href="#about">About</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
         <li><a href="#features">Features</a></li>
-        <li><a href="#roles">Roles</a></li>
       </ul>
 
       <div class="nav-actions">
         <a href="{{ url_for('auth.register') }}" class="btn-nav-secondary">Register as Auditor</a>
-        <a href="#" class="btn-nav-primary">Public Dashboard</a>
+        <a href="{{url_for('indus.industries')}}" class="btn-nav-primary">Public Dashboard</a>
       </div>
 
       <button class="hamburger" id="hamburger" aria-label="Open menu">
@@ -53,11 +52,10 @@
         <li><a href="#about">About</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
         <li><a href="#features">Features</a></li>
-        <li><a href="#roles">Roles</a></li>
       </ul>
       <div class="mobile-actions">
         <a href="/register" class="btn-nav-secondary">Auditor Login</a>
-        <a href="#" class="btn-nav-primary">Public Dashboard</a>
+        <a href="{{url_for('indus.industries')}}" class="btn-nav-primary">Public Dashboard</a>
       </div>
     </div>
   </nav>
@@ -80,8 +78,8 @@
          A transparent platform that records industrial pollution data, verifies environmental compliance, and ensures trust through blockchain-secured records and intelligent analysis.
         </p>
         <div class="hero-btns">
-          <a href="#" class="btn-primary">Explore Public Records</a>
-          <a href="/login" class="btn-outline">Login as Auditor</a>
+          <a href="{{url_for('indus.industries')}}" class="btn-primary">Explore Public Records</a>
+          <a href="{{url_for('auth.login')}}" class="btn-outline">Login as Auditor</a>
         </div>
       </div>
 
@@ -388,52 +386,8 @@
         </div>
       </div>
       <div class="dash-cta">
-        <a href="#" class="btn-primary">View Full Dashboard</a>
+        <a href="{{url_for('indus.industries')}}" class="btn-primary">View Full Dashboard</a>
         <span class="dash-note">No login required — data is public by design.</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ======= ROLES ======= -->
-  <section class="section" id="roles">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-eyebrow">WHO USES BLUECRED</span>
-        <h2 class="section-title">Designed for every stakeholder.</h2>
-      </div>
-      <div class="roles-grid">
-        <div class="role-card">
-          <div class="role-top">
-            <span class="role-icon">🔬</span>
-            <h3>Auditors</h3>
-          </div>
-          <p>Certified inspectors who collect on-site pollution data and submit verified field records into the ledger.</p>
-          <a href="#" class="role-link">Auditor Login →</a>
-        </div>
-        <div class="role-card">
-          <div class="role-top">
-            <span class="role-icon">🏭</span>
-            <h3>Industries</h3>
-          </div>
-          <p>Manufacturing and energy entities whose emissions are monitored. Access your compliance record and BlueCred Score.</p>
-          <a href="#" class="role-link">Industry Portal →</a>
-        </div>
-        <div class="role-card">
-          <div class="role-top">
-            <span class="role-icon">👁</span>
-            <h3>Public</h3>
-          </div>
-          <p>Any citizen who wants to verify what industries near them are emitting. No account required — open by default.</p>
-          <a href="#" class="role-link">View Records →</a>
-        </div>
-        <div class="role-card">
-          <div class="role-top">
-            <span class="role-icon">⚖</span>
-            <h3>Authorities</h3>
-          </div>
-          <p>Regulatory bodies that analyse environmental trends, review flagged violations, and enforce compliance actions.</p>
-          <a href="#" class="role-link">Authority Access →</a>
-        </div>
       </div>
     </div>
   </section>
