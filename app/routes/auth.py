@@ -6,6 +6,8 @@ auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/')
 def home():
+    if 'auditor' in session:
+        return redirect(url_for('auth.industry_records'))
     return render_template('landing.html')
 
 
