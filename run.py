@@ -1,5 +1,6 @@
 from app import create_app, db
 from app.models import Auditor
+from app.models import Industry
 
 app = create_app()
 

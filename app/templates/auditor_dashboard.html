@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BlueCred — Auditor Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{url_for('static',filename='css/auditor_dashboard.css')}}"/>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="{{url_for('auth.home')}}" class="brand">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="6" fill="#1A56A0"/>
+        <path d="M8 16 C8 11.6 11.6 8 16 8 C18.8 8 21.3 9.4 22.8 11.6" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <path d="M24 16 C24 20.4 20.4 24 16 24 C13.2 24 10.7 22.6 9.2 20.4" stroke="#4CAF82" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <circle cx="16" cy="16" r="2.5" fill="white"/>
+        <circle cx="22.8" cy="11.6" r="1.8" fill="#4CAF82"/>
+        <circle cx="9.2" cy="20.4" r="1.8" fill="white"/>
+      </svg>
+      <span class="brand-name">BlueCred</span>
+    </a>
+    <div class="nav-center">
+      <span class="nav-page-label">Auditor Portal</span>
+    </div>
+    <div class="nav-right">
+      <!-- Populated by JS via /api/auditor/me -->
+      <span class="session-chip">🟢 <span class="mono" id="navAuditorId">—</span></span>
+      <a href="{{url_for('auth.logout')}}" class="btn-logout" id="logoutBtn">Sign Out</a>
+    </div>
+  </div>
+</nav>
+
+<!-- GREETING BAND -->
+<div class="greeting-band">
+  <div class="page-container greeting-inner">
+
+    <div class="greeting-text">
+      <div class="greeting-line">Good day,</div>
+      <!-- Populated by JS -->
+      <h1 class="greeting-name">
+        <span id="auditorName"><span class="skeleton sk-name"></span></span>
+        <span class="verified-pill">✓ BlueCred Verified</span>
+      </h1>
+      <div class="greeting-sub">
+        <span class="mono id-chip" id="auditorId"><span class="skeleton sk-id"></span></span>
+      </div>
+    </div>
+
+    <div class="audit-counter-wrap">
+      <div class="counter-ring">
+        <svg class="ring-svg" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="#4CAF82" stroke-width="8"
+            stroke-linecap="round" stroke-dasharray="314"
+            stroke-dashoffset="314" id="ringCircle"
+            transform="rotate(-90 60 60)"/>
+        </svg>
+        <div class="counter-inner">
+          <!-- data-target set by JS from API -->
+          <span class="counter-num" id="countAudits">0</span>
+          <span class="counter-sub">Audits</span>
+        </div>
+      </div>
+      <div class="counter-label">Total Reports Submitted</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- API ERROR BANNER (hidden by default) -->
+<div class="api-error-banner" id="apiBanner" style="display:none;">
+  <span>⚠</span>
+  <span id="apiBannerMsg">Unable to load auditor data. Please refresh or contact support.</span>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+<div class="page-container main-layout">
+
+  <!-- ===== LEFT: FORM ===== -->
+  <div class="left-col">
+
+    <!-- FORM CARD -->
+    <div class="form-block">
+
+      <div class="form-block-header">
+        <span class="block-eyebrow">REPORT SUBMISSION</span>
+        <h2 class="block-title">Login for Report Submission</h2>
+        <p class="block-desc">
+          To file an audit report for a specific industrial facility, enter the credentials
+          the industry provided to you. The <strong>Site Access Code</strong> and
+          <strong>Field Verification Key</strong> are issued by the BlueCred team directly
+          to each registered industry after their verification is complete. The industry
+          must share these with you (the assigned auditor) in writing before field
+          inspection begins. Do not accept credentials verbally.
+        </p>
+      </div>
+
+      <!-- Credential flow info -->
+      <div class="cred-flow">
+        <div class="flow-step">
+          <div class="flow-icon">🏢</div>
+          <div class="flow-text">
+            <strong>BlueCred issues credentials</strong>
+            <span>to verified industry</span>
+          </div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-icon">🏭</div>
+          <div class="flow-text">
+            <strong>Industry shares</strong>
+            <span>with assigned auditor</span>
+          </div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-icon">🔬</div>
+          <div class="flow-text">
+            <strong>Auditor enters</strong>
+            <span>to access report form</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- THE FORM -->
+      <div class="form-zone">
+        <form class="audit-form" id="auditAccessForm" novalidate>
+
+          <div class="field-group">
+            <label for="siteCode">Site Access Code</label>
+            <div class="input-row">
+              <span class="input-prefix mono">SAC</span>
+              <input type="text" id="siteCode" name="siteCode"
+                placeholder="e.g. KNP-00302"
+                autocomplete="off" required spellcheck="false"/>
+            </div>
+            <span class="field-note">Issued by BlueCred to the registered industry · Format: SAC-[REGION]-[ID]</span>
+          </div>
+
+          <div class="field-group">
+            <label for="fieldKey">Field Verification Key</label>
+            <div class="input-row">
+              <span class="input-prefix mono">FVK</span>
+              <input type="password" id="fieldKey" name="fieldKey"
+                placeholder="Key shared by the industry in writing"
+                autocomplete="off" required/>
+              <button type="button" class="toggle-pass" id="togglePass" title="Show/hide key">👁</button>
+            </div>
+            <span class="field-note">Permanent access credential · assigned to the registered industry and auditor for authorized verification.</span>
+          </div>
+
+          <!-- Feedback message area -->
+          <div class="form-feedback" id="formFeedback" style="display:none;"></div>
+
+          <!-- Sign notice — auditor id injected by JS -->
+          <div class="sign-notice">
+            <span class="sn-icon">🔏</span>
+            <span>Your submission will be permanently signed under
+              <strong class="mono" id="signNoticeId">—</strong>
+              on the BlueCred tamper-proof ledger.
+            </span>
+          </div>
+
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <span id="submitLabel">Login for Report Submission</span>
+            <span class="btn-arrow">→</span>
+            <span class="btn-spinner" id="submitSpinner" style="display:none;">⟳</span>
+          </button>
+
+        </form>
+      </div>
+
+      <!-- Not listed -->
+      <div class="not-listed-block">
+        <div class="not-listed-text">
+          <span>⚠</span>
+          <span>Inspecting a facility whose credentials have not been issued yet?</span>
+        </div>
+        <a href="register.html" class="btn-register">
+          🏭 &nbsp; Industry not listed? Register through BlueCred
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== RIGHT: SIDEBAR ===== -->
+  <div class="right-col">
+
+    <div class="info-card">
+      <span class="block-eyebrow">AUDITOR RESPONSIBILITIES</span>
+      <ul class="resp-list">
+        <li>
+          <span class="resp-num">01</span>
+          <div>
+            <strong>Verify site credentials before entry</strong>
+            <p>Confirm the Site Access Code matches the official assignment letter from BlueCred before proceeding with inspection.</p>
+          </div>
+        </li>
+        <li>
+          <span class="resp-num">02</span>
+          <div>
+            <strong>Collect readings independently</strong>
+            <p>All pollution readings must be taken by you using calibrated instruments. Do not rely on data provided by the industry.</p>
+          </div>
+        </li>
+        <li>
+          <span class="resp-num">03</span>
+          <div>
+            <strong>Attach supporting field evidence</strong>
+            <p>Photographs, instrument logs, and site sketches must be attached before finalising the report.</p>
+          </div>
+        </li>
+        <li>
+          <span class="resp-num">04</span>
+          <div>
+            <strong>Submit within 24 hours of inspection</strong>
+            <p>Reports must be filed the same day or the next morning. Delayed submissions require admin approval.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="warning-card">
+      <div class="warn-top"><span>⚠</span><strong>Legal Notice</strong></div>
+      <p>Falsifying, omitting, or manipulating data in an audit report is a criminal offence under the Environment Protection Act, 1986. All submissions are permanently recorded and subject to regulatory review.</p>
+    </div>
+
+    <div class="contact-card">
+      <span class="block-eyebrow">NEED HELP?</span>
+      <div class="contact-row">
+        <span>📧</span>
+        <div>
+          <span class="c-label">Support Email</span>
+          <a href="mailto:support@bluecred.gov.in" class="c-val">support@bluecred.gov.in</a>
+        </div>
+      </div>
+      <div class="contact-row">
+        <span>📞</span>
+        <div>
+          <span class="c-label">Helpdesk</span>
+          <span class="c-val">1800-XXX-XXXX · Mon–Fri, 10am–5pm</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="fbrand">
+      <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="6" fill="#1A56A0"/>
+        <path d="M8 16 C8 11.6 11.6 8 16 8 C18.8 8 21.3 9.4 22.8 11.6" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <path d="M24 16 C24 20.4 20.4 24 16 24 C13.2 24 10.7 22.6 9.2 20.4" stroke="#4CAF82" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <circle cx="16" cy="16" r="2.5" fill="white"/>
+        <circle cx="22.8" cy="11.6" r="1.8" fill="#4CAF82"/>
+        <circle cx="9.2" cy="20.4" r="1.8" fill="white"/>
+      </svg>
+      BlueCred
+    </div>
+    <span class="footer-copy">© 2026 BlueCred · Auditor portal — authorised access only.</span>
+  </div>
+</footer>
+
+<script>
+async function loadAuditorProfile() {
+  try {
+    const res = await fetch("/api/auditor/me");
+
+    if (!res.ok) {
+      console.log("API error:", res.status);
+      return;
+    }
+
+    const data = await res.json();
+
+    // main values
+    document.getElementById("auditorName").textContent = data.name;
+    document.getElementById("auditorId").textContent = data.id;
+    document.getElementById("countAudits").textContent = data.total_audits;
+
+    // extra UI values (IMPORTANT for your page)
+    document.getElementById("navAuditorId").textContent = data.id;
+    document.getElementById("signNoticeId").textContent = data.id;
+
+  } catch (err) {
+    console.log("Fetch failed:", err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadAuditorProfile);
+</script>
+</body>
+</html>

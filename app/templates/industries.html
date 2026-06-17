@@ -150,26 +150,46 @@
 // when connecting Flask backend later.
 // Example: const industries = await fetch('/api/industries').then(r => r.json());
 // ============================================================
-const industries = [
-  { id:"IND-00101", name:"Kanpur Leather Works Pvt. Ltd.", type:"Leather", location:"Jajmau, Kanpur", score:82, pollution:"Low",    auditor:"AUD-2041", lastAudit:"10 Jun 2026" },
-  { id:"IND-00102", name:"Sheetal Tanneries Ltd.",          type:"Leather", location:"Jajmau, Kanpur", score:61, pollution:"Moderate", auditor:"AUD-2038", lastAudit:"05 Jun 2026" },
-  { id:"IND-00103", name:"Super Tannery India Ltd.",        type:"Leather", location:"Jajmau, Kanpur", score:47, pollution:"High",     auditor:"AUD-2039", lastAudit:"01 Jun 2026" },
-  { id:"IND-00104", name:"National Leather Exports",        type:"Leather", location:"Sarsaul, Kanpur", score:78, pollution:"Moderate", auditor:"AUD-2041", lastAudit:"08 Jun 2026" },
-  { id:"IND-00201", name:"Kanpur Textiles Mill Ltd.",       type:"Textile", location:"Dada Nagar, Kanpur", score:88, pollution:"Low",    auditor:"AUD-2035", lastAudit:"11 Jun 2026" },
-  { id:"IND-00202", name:"Laxmi Cotton Mills",              type:"Textile", location:"Gwaltoli, Kanpur",  score:73, pollution:"Moderate", auditor:"AUD-2036", lastAudit:"04 Jun 2026" },
-  { id:"IND-00203", name:"Elgin Mills Co. Ltd.",            type:"Textile", location:"Civil Lines, Kanpur", score:91, pollution:"Low",  auditor:"AUD-2035", lastAudit:"12 Jun 2026" },
-  { id:"IND-00301", name:"Hindustan Chemicals Ltd.",        type:"Chemical", location:"Panki, Kanpur",   score:55, pollution:"Moderate", auditor:"AUD-2042", lastAudit:"09 Jun 2026" },
-  { id:"IND-00302", name:"Ganges Chemical Works",           type:"Chemical", location:"Panki, Kanpur",   score:39, pollution:"High",     auditor:"AUD-2043", lastAudit:"03 Jun 2026" },
-  { id:"IND-00303", name:"Allied Resins & Chemicals",       type:"Chemical", location:"Chakeri, Kanpur", score:67, pollution:"Moderate", auditor:"AUD-2042", lastAudit:"07 Jun 2026" },
-  { id:"IND-00304", name:"Kanpur Fertilisers & Chemicals",  type:"Chemical", location:"Panki, Kanpur",   score:84, pollution:"Low",    auditor:"AUD-2044", lastAudit:"06 Jun 2026" },
-  { id:"IND-00401", name:"Ordnance Factory Kanpur",         type:"Manufacturing", location:"Samapur, Kanpur", score:79, pollution:"Moderate", auditor:"AUD-2037", lastAudit:"10 Jun 2026" },
-  { id:"IND-00402", name:"Kanpur Plastipack Ltd.",          type:"Manufacturing", location:"Dada Nagar, Kanpur", score:86, pollution:"Low", auditor:"AUD-2036", lastAudit:"09 Jun 2026" },
-  { id:"IND-00403", name:"Nandan Petrochem Ltd.",           type:"Manufacturing", location:"Panki, Kanpur",     score:52, pollution:"High", auditor:"AUD-2043", lastAudit:"02 Jun 2026" },
-  { id:"IND-00501", name:"Parle Agro Pvt. Ltd. — Kanpur",  type:"Food Processing", location:"Kalyanpur, Kanpur", score:93, pollution:"Low", auditor:"AUD-2034", lastAudit:"11 Jun 2026" },
-  { id:"IND-00502", name:"ITC Foods Division — Kanpur",     type:"Food Processing", location:"Sarsaul, Kanpur",  score:89, pollution:"Low", auditor:"AUD-2034", lastAudit:"10 Jun 2026" },
-  { id:"IND-00601", name:"Kanpur Electric Supply Co.",      type:"Other", location:"Civil Lines, Kanpur", score:76, pollution:"Moderate", auditor:"AUD-2040", lastAudit:"08 Jun 2026" },
-  { id:"IND-00602", name:"UP State Cement Corp.",           type:"Other", location:"Rania, Kanpur Dehat", score:63, pollution:"Moderate", auditor:"AUD-2040", lastAudit:"06 Jun 2026" },
-];
+let industries = [];
+
+// ============================================================
+// FETCH INDUSTRIES FROM FLASK API
+// ============================================================
+
+async function loadIndustries() {
+
+  try {
+
+    const response = await fetch("/api/fetch_industries");
+
+    const data = await response.json();
+
+
+    industries = data.map(ind => ({
+      id: ind.industry_id,
+      name: ind.name,
+      type: ind.industry_type,
+      location: ind.location,
+      score: ind.bluecred_score,
+      pollution: ind.pollution_status,
+      auditor: ind.auditor_id,
+      lastAudit: ind.last_audit_date
+    }));
+
+
+    document.getElementById("totalCount").textContent = industries.length;
+
+    renderCards(industries);
+
+  }
+
+  catch(error){
+
+    console.error("Error loading industries:", error);
+
+  }
+
+}
 
 // ============================================================
 // RENDER
@@ -288,7 +308,7 @@ document.getElementById("resetBtn").addEventListener("click", () => {
 });
 
 // Initial render
-renderCards(industries);
+loadIndustries();
 </script>
 
 </body>
