@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash, session, jsonify
 from app import db
-from app.models import Industry, Auditor
+from app.models import Industry, Auditor , IndustryAccess
 
 
 apis_bp = Blueprint('apis',__name__)
@@ -46,3 +46,66 @@ def fetch_auditor():
         "name": auditor.name,
         "total_audits": auditor.total_audits
     }) 
+
+
+
+@apis_bp.route('/api/audit/access', methods=['POST'])
+def audit_access():
+
+    data = request.json
+
+    industry_id = data["industry_id"]
+    key = data["field_verification_key"]
+
+    access = IndustryAccess.query.filter_by(
+        industry_id=industry_id,
+        field_verification_key=key
+    ).first()
+
+    if not access:
+        return jsonify({
+            "success": False,
+            "error": "Invalid credentials"
+        }), 401
+
+    industry = Industry.query.filter_by(
+        industry_id=industry_id
+    ).first()
+
+
+    session['loggedin_industry'] = industry_id
+
+    return jsonify({
+        "success": True,
+        "redirect_url": "/audit_report",
+        "industry": {
+            "industry_id": industry.industry_id,
+            "name": industry.name,
+            "type": industry.industry_type,
+            "location": industry.location,
+            "score": industry.bluecred_score,
+            "pollution": industry.pollution_status,
+            "auditor": industry.auditor_id
+        }
+    })
+
+
+@apis_bp.route('/api/industry/current', methods=['GET'])
+def current_industry():
+
+    industry_id = session.get('loggedin_industry')
+    auditor_db_id = session.get('auditor')
+
+    if not industry_id:
+        return jsonify({"error": "No industry selected"}), 401
+
+    industry = Industry.query.filter_by(industry_id=industry_id).first()
+    auditor = Auditor.query.get(auditor_db_id)
+
+    return jsonify({
+        "industry_id": industry.industry_id,
+        "name": industry.name,
+        "type": industry.industry_type,
+        "location": industry.location,
+        "auditor": auditor.blue_id
+    })

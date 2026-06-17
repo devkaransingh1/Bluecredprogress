@@ -64,3 +64,21 @@ class Industry(db.Model):
         db.DateTime,
         default=lambda: datetime.now(timezone.utc)
     )
+
+
+class IndustryAccess(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    industry_id = db.Column(
+        db.String(50),
+        db.ForeignKey('industry.industry_id'),
+        unique=True,
+        nullable=False
+    )
+
+    field_verification_key = db.Column(
+        db.String(100),
+        unique=True,
+        nullable=False
+    )

@@ -8,6 +8,7 @@ indus_bp = Blueprint('indus',__name__)
 @indus_bp.route('/industries')
 def industries():
     if 'auditor' in session:
-        return redirect(url_for('auth.industry_records'))
+        return redirect(url_for('auth.auditor_dashboard'))
     return render_template('industries.html')
+
 

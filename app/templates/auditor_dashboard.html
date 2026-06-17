@@ -133,14 +133,14 @@
         <form class="audit-form" id="auditAccessForm" novalidate>
 
           <div class="field-group">
-            <label for="siteCode">Site Access Code</label>
+            <label for="siteCode">Industry ID</label>
             <div class="input-row">
               <span class="input-prefix mono">SAC</span>
               <input type="text" id="siteCode" name="siteCode"
-                placeholder="e.g. KNP-00302"
+                placeholder="e.g. IND-00302"
                 autocomplete="off" required spellcheck="false"/>
             </div>
-            <span class="field-note">Issued by BlueCred to the registered industry · Format: SAC-[REGION]-[ID]</span>
+            <span class="field-note">Issued by BlueCred to the registered industry.</span>
           </div>
 
           <div class="field-group">
@@ -152,7 +152,7 @@
                 autocomplete="off" required/>
               <button type="button" class="toggle-pass" id="togglePass" title="Show/hide key">👁</button>
             </div>
-            <span class="field-note">Permanent access credential · assigned to the registered industry and auditor for authorized verification.</span>
+            <span class="field-note">Permanent access credential · assigned to the registered industry for authorized verification.</span>
           </div>
 
           <!-- Feedback message area -->
@@ -274,6 +274,10 @@
 </footer>
 
 <script>
+// ─── DOM ELEMENT HELPERS ─────────────────────────────────────
+const el = (id) => document.getElementById(id);
+
+// ─── LOAD AUDITOR PROFILE ────────────────────────────────────
 async function loadAuditorProfile() {
   try {
     const res = await fetch("/api/auditor/me");
@@ -285,21 +289,123 @@ async function loadAuditorProfile() {
 
     const data = await res.json();
 
-    // main values
-    document.getElementById("auditorName").textContent = data.name;
-    document.getElementById("auditorId").textContent = data.id;
-    document.getElementById("countAudits").textContent = data.total_audits;
+    // Populate profile DOM strings
+    el("auditorName").textContent = data.name;
+    el("auditorId").textContent = data.id;
+    el("countAudits").textContent = data.total_audits;
+    el("navAuditorId").textContent = data.id;
+    el("signNoticeId").textContent = data.id;
 
-    // extra UI values (IMPORTANT for your page)
-    document.getElementById("navAuditorId").textContent = data.id;
-    document.getElementById("signNoticeId").textContent = data.id;
+    // Optional: Animate ring circle matrix dash array if element exists
+    const ring = el("ringCircle");
+    if (ring) {
+      ring.style.strokeDashoffset = Math.max(314 - (314 * (data.total_audits / 200)), 0);
+    }
 
   } catch (err) {
     console.log("Fetch failed:", err);
   }
 }
 
-document.addEventListener("DOMContentLoaded", loadAuditorProfile);
+// ─── FORM ACCESS SUBMISSION HANDLER ──────────────────────────
+function setupFormSubmission() {
+  const form = el("auditAccessForm");
+  const submitBtn = el("submitBtn");
+  const label = el("submitLabel");
+  const spinner = el("submitSpinner");
+  const feedback = el("formFeedback");
+
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // 1. Client-Side Integrity Check (Bypasses submission if empty or invalid)
+    if (!form.checkValidity()) {
+      feedback.textContent = "Please fill in both the Industry ID and Field Verification Key.";
+      feedback.className = "form-feedback fb-error"; // Adjust standard layout classes
+      feedback.style.display = "block";
+      form.reportValidity();
+      return;
+    }
+
+    // Reset feedback state & toggle processing states
+    feedback.style.display = "none";
+    feedback.textContent = "";
+    submitBtn.disabled = true;
+    spinner.style.display = "inline-block";
+    label.textContent = "Verifying site credentials...";
+
+    const payload = {
+      industry_id: el("siteCode").value.trim(),
+      field_verification_key: el("fieldKey").value.trim()
+    };
+
+    try {
+      // Direct local route submission matching backend app maps
+      const res = await fetch("/api/audit/access", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        feedback.textContent = "Credentials verified. Access authorized, redirecting...";
+        feedback.style.color = "#4CAF82";
+        feedback.style.display = "block";
+        
+        setTimeout(() => {
+          window.location.href = data.redirect_url;
+        }, 1000);
+      } else {
+        // Display validation anomaly response returned directly from server logic
+        feedback.textContent = data.error || "Invalid credentials. Verify assignment parameters and retry.";
+        feedback.style.color = "#E53935";
+        feedback.style.display = "block";
+        resetSubmitState();
+      }
+
+    } catch (err) {
+      console.error("Submission pipeline error:", err);
+      feedback.textContent = "Network error. Check environment connection and status matrix.";
+      feedback.style.color = "#E53935";
+      feedback.style.display = "block";
+      resetSubmitState();
+    }
+  });
+
+  function resetSubmitState() {
+    submitBtn.disabled = false;
+    spinner.style.display = "none";
+    label.textContent = "Login for Report Submission";
+  }
+}
+
+// ─── TOGGLE PASSWORD FIELD VISIBILITY ──────────────────────────
+function setupPasswordToggle() {
+  const toggleBtn = el("togglePass");
+  const inputField = el("fieldKey");
+
+  if (!toggleBtn || !inputField) return;
+
+  toggleBtn.addEventListener("click", () => {
+    const isMasked = inputField.type === "password";
+    inputField.type = isMasked ? "text" : "password";
+    toggleBtn.textContent = isMasked ? "🙈" : "👁";
+  });
+}
+
+// ─── INITIALIZATION MATRIX ───────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  loadAuditorProfile();
+  setupFormSubmission();
+  setupPasswordToggle();
+});
 </script>
 </body>
 </html>
