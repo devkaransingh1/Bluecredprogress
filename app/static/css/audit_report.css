@@ -516,7 +516,7 @@ textarea {
   border-radius: 12px;
   box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   z-index: 90;
 }
 

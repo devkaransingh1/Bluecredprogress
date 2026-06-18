@@ -97,12 +97,22 @@ def auditor_dashboard():
 
 @auth_bp.route('/audit_report')
 def audit_report():
-    print("industry id =", session.get('loggedin_industry'))
     if 'loggedin_industry' in session:
         return render_template('audit_report.html')
 
     return redirect(url_for('auth.auditor_dashboard'))
 
+
+
+@auth_bp.route('/thankyou')
+def thankyou():
+
+    result = session.get("audit_result")
+
+    if not result:
+        return redirect(url_for('auth.auditor_dashboard'))
+
+    return render_template("thankyou.html", result=result)
 
 
 

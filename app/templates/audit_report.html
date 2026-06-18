@@ -278,15 +278,11 @@
             <span class="v-label">Assigned Report ID</span>
             <span class="v-value mono" id="vReportId">Pending Generation</span>
           </div>
-          <div class="v-row">
-            <span class="v-label">Ledger Cryptographic Hash</span>
-            <span class="v-value mono break-all" id="vHash">Unsigned Matrix Document</span>
-          </div>
         </div>
 
         <div class="shield-notice">
           <div class="shield-icon">🛡️</div>
-          <p>This report will be permanently linked with the auditor identity. The generated SHA-256 block hash establishes strict, tamper-proof alignment inside the immutable BlueCred data ledger.</p>
+          <p>This report will be permanently linked with the auditor identity.</p>
         </div>
       </section>
 
@@ -358,9 +354,6 @@
 </footer>
 
 <script>
-const API_BASE = ''; 
-const TARGET_INDUSTRY_ID = "IND-00302";
-
 document.addEventListener('DOMContentLoaded', () => {
   initializePrefilledData();
   handleFormSubmission();
@@ -468,57 +461,52 @@ function handleFormSubmission() {
     };
 
     try {
-      const response = await fetch(`${API_BASE}/api/audit/submit-report`, {
+      const response = await fetch(`/api/audit/submit-report`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       }).catch(() => null);
 
       // Artificially simulate standard processing latency execution
-      setTimeout(async () => {
-        let result;
-        if (response && response.ok) {
-          result = await response.json();
-        } else {
-          // Accurate operational fallbacks to simulate smooth local workflow execution
-          result = {
-            success: true,
-            timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19),
-            report_id: "REP-" + Math.floor(100000 + Math.random() * 900000),
-            ledger_hash: "0x" + Array.from({length: 64}, () => Math.floor(Math.random()*16).toString(16)).join('')
-          };
-        }
+      if (response && response.ok) {
 
-        if (result.success) {
-          // Dynamic Layout Transformation Mutation Updates
-          feedback.textContent = "Audit report successfully submitted and recorded.";
-          feedback.classList.add('fb-success');
-          feedback.style.display = 'block';
+    const result = await response.json();
 
-          // Update cryptographic block info cards inside the matrix layout
-          document.getElementById('vTime').textContent = result.timestamp;
-          document.getElementById('vReportId').textContent = result.report_id;
-          document.getElementById('vHash').textContent = result.ledger_hash;
+    if(result.success){
 
-          // Mutate upper control status panels
-          const topBadge = document.getElementById('topStatusBadge');
-          topBadge.textContent = "Verified Submission";
-          topBadge.className = "status-badge status-verified";
+        // store data temporarily for thankyou page
+        sessionStorage.setItem(
+            "report_id",
+            result.report_id
+        );
 
-          // Mutate sidebar monitoring state tracking badges
-          const trackBadge = document.getElementById('trackingStateBadge');
-          trackBadge.textContent = "Verified Submission";
-          trackBadge.className = "track-value-badge badge-verified";
+        sessionStorage.setItem(
+            "report_hash",
+            result.report_hash
+        );
 
-          // Lock interactive controls down post completion criteria
-          btnText.textContent = 'Report Successfully Committed';
-          btnSpinner.style.display = 'none';
-          submitBtn.style.background = '#4CAF82';
-          
-        } else {
-          throw new Error(result.error || "Compliance validation interface rejected payload.");
-        }
-      }, 1400);
+        sessionStorage.setItem(
+            "submitted_at",
+            result.submitted_at
+        );
+
+
+        // redirect
+        window.location.href = "/thankyou";
+
+
+    }else{
+
+        throw new Error(result.error);
+
+    }
+
+}
+else{
+
+    throw new Error("Report submission failed");
+
+}
 
     } catch (err) {
       // Revert states cleanly

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BlueCred — Report Committed Successfully</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ─── STYLE ARCHITECTURE (THEME PRESERVED) ─── */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-main: #F4F6F9;
+      --bg-card: #FFFFFF;
+      --text-main: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --primary-blue: #1A56A0;
+      --primary-blue-hover: #134480;
+      --accent-green: #4CAF82;
+      --accent-green-bg: #E8F5E9;
+      --danger-red: #E53935;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-pop: 'Poppins', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border-color);
+      height: 64px;
+      width: 100%;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1240px;
+      margin: 0 auto;
+      height: 100%;
+      padding: 0 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-name {
+      font-family: var(--font-pop);
+      font-weight: 800;
+      font-size: 20px;
+      color: #111827;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-page-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: var(--bg-main);
+      padding: 4px 12px;
+      border-radius: 4px;
+    }
+
+    /* HERO PROFILE HEADER BLOCK */
+    .success-header {
+      background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 100%);
+      color: #FFFFFF;
+      padding: 60px 0;
+      border-bottom: 4px solid var(--accent-green);
+      text-align: center;
+    }
+
+    .header-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .success-icon-wrap {
+      width: 64px;
+      height: 64px;
+      background: rgba(76, 175, 130, 0.15);
+      border: 2px solid var(--accent-green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 28px;
+      color: var(--accent-green);
+    }
+
+    .success-header h1 {
+      font-family: var(--font-pop);
+      font-weight: 700;
+      font-size: 32px;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    .greeting-line {
+      font-size: 16px;
+      color: #94A3B8;
+      font-weight: 500;
+    }
+
+    .auditor-highlight {
+      color: #FFFFFF;
+      font-weight: 700;
+      border-bottom: 2px dotted #60A5FA;
+    }
+
+    /* MAIN CONTAINER INTERFACES */
+    .main-container {
+      flex: 1;
+      max-width: 680px;
+      width: 100%;
+      margin: -40px auto 60px;
+      padding: 0 24px;
+      z-index: 10;
+    }
+
+    .receipt-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 36px;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+    }
+
+    .receipt-title-bar {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .receipt-title-bar h2 {
+      font-family: var(--font-pop);
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary-blue);
+    }
+
+    .receipt-title-bar p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* DIGITAL METADATA LEDGER */
+    .ledger-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: #F8FAFC;
+      border: 1px dashed #CBD5E1;
+      padding: 24px;
+      border-radius: 8px;
+      margin-bottom: 32px;
+    }
+
+    .ledger-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      font-size: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #E2E8F0;
+    }
+
+    .ledger-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .l-label {
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .l-value {
+      font-weight: 600;
+      color: #0F172A;
+      text-align: right;
+      max-width: 65%;
+    }
+
+    .mono {
+      font-family: var(--font-mono);
+      font-weight: 500;
+    }
+
+    .hash-value {
+      font-size: 12px;
+      word-break: break-all;
+      color: #0F172A;
+      line-height: 1.4;
+    }
+
+    /* SECURITY WARNING DISCLOSURE */
+    .security-disclosure-box {
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .sec-alert-icon {
+      font-size: 20px;
+    }
+
+    .sec-alert-text {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #92400E;
+      font-weight: 500;
+    }
+
+    .sec-alert-text strong {
+      font-weight: 700;
+    }
+
+    /* INTERACTIVE CONTROL ACTIONS */
+    .action-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .notice-above-btn {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent-green);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-continue {
+      width: 100%;
+      background: var(--primary-blue);
+      color: #FFFFFF;
+      border: none;
+      padding: 14px 28px;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .btn-continue:hover {
+      background: var(--primary-blue-hover);
+    }
+
+    /* FOOTER */
+    .footer {
+      background: #FFFFFF;
+      border-top: 1px solid var(--border-color);
+      padding: 20px 0;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* SKELETON LOADING INDICATOR */
+    .skeleton {
+      background: #E2E8F0;
+      background: linear-gradient(90deg, #E2E8F0 25%, #F1F5F9 50%, #E2E8F0 75%);
+      background-size: 200% 100%;
+      animation: loading-shimmer 1.5s infinite;
+      border-radius: 4px;
+      display: inline-block;
+      height: 14px;
+      width: 120px;
+    }
+    
+    .sk-hash { width: 100%; height: 28px; }
+
+    @keyframes loading-shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="#" class="brand">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="6" fill="#1A56A0"/>
+        <path d="M8 16 C8 11.6 11.6 8 16 8 C18.8 8 21.3 9.4 22.8 11.6" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <path d="M24 16 C24 20.4 20.4 24 16 24 C13.2 24 10.7 22.6 9.2 20.4" stroke="#4CAF82" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span class="brand-name">BlueCred</span>
+    </a>
+    <div class="nav-center">
+      <span class="nav-page-label">Cryptographic Receipt</span>
+    </div>
+    <div class="nav-right"></div>
+  </div>
+</nav>
+
+<header class="success-header">
+  <div class="header-inner">
+    <div class="success-icon-wrap">✓</div>
+    <h1>Audit Block Committed</h1>
+    <p class="greeting-line">Thank you, <span class="auditor-highlight" id="auditorNameDisplay"><span class="skeleton"></span></span>. Your physical inspection dataset has been verified.</p>
+  </div>
+</header>
+
+<main class="main-container">
+  <div class="receipt-card">
+    
+    <div class="receipt-title-bar">
+      <h2>Immutable Audit Receipt</h2>
+      <p>Data payload written directly to BlueCred Compliance Ledger</p>
+    </div>
+
+    <div class="ledger-grid">
+      <div class="ledger-row">
+        <span class="l-label">Assigned Report ID</span>
+        <span class="l-value mono text-blue" id="lblReportId"><span class="skeleton"></span></span>
+      </div>
+      <div class="ledger-row">
+        <span class="l-label">Target Industry ID</span>
+        <span class="l-value mono" id="lblIndustryId"><span class="skeleton"></span></span>
+      </div>
+      <div class="ledger-row">
+        <span class="l-label">Signing Auditor ID</span>
+        <span class="l-value mono" id="lblAuditorId"><span class="skeleton"></span></span>
+      </div>
+      <div class="ledger-row">
+        <span class="l-label">Ledger Commit Time</span>
+        <span class="l-value" id="lblSubmittedAt"><span class="skeleton"></span></span>
+      </div>
+      <div class="ledger-row" style="flex-direction: column; gap: 6px; align-items: flex-start;">
+        <span class="l-label">SHA-256 Protocol Hash</span>
+        <span class="l-value mono hash-value" id="lblReportHash"><span class="skeleton sk-hash"></span></span>
+      </div>
+    </div>
+
+    <div class="security-disclosure-box">
+      <span class="sec-alert-icon">⚠️</span>
+      <div class="sec-alert-text">
+        <strong>Session Demolition Notice:</strong> For regulatory protection, security policy mandates that moving past this page clears temporary state matrices. Both the assigned auditor and the target industrial session parameters will be fully destroyed.
+      </div>
+    </div>
+
+    <div class="action-row">
+      <div class="notice-above-btn">
+        <span>🎉</span> The report has been submitted successfully
+      </div>
+      <a href="/api/auth/logout" class="btn-continue" id="btnContinue">Continue & Secure Session</a>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div>© 2026 BlueCred Compliance Engine · National Secure Environmental Registry Protocol.</div>
+</footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+  fetchAuditReportDetails();
+  bindActionLogoffBehavior();
+});
+
+/**
+ * NO URL parsing anymore — session based flow
+ */
+async function fetchAuditReportDetails() {
+
+  try {
+    const res = await fetch(`/api/audit/summary`, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (!res.ok) {
+      throw new Error(`Session expired or invalid (${res.status})`);
+    }
+
+    const data = await res.json();
+    populateReceiptFields(data);
+
+  } catch (err) {
+    console.error("[BlueCred Platform Error]", err);
+    displayPipelineFailureFallback();
+  }
+}
+
+/**
+ * Maps session data to UI
+ */
+function populateReceiptFields(data) {
+
+  document.getElementById("lblReportId").textContent    = data.report_id;
+  document.getElementById("lblIndustryId").textContent  = data.industry_id;
+  document.getElementById("lblAuditorId").textContent   = data.auditor_id;
+  document.getElementById("lblSubmittedAt").textContent = data.submitted_at;
+  document.getElementById("lblReportHash").textContent  = data.report_hash;
+
+  document.getElementById("auditorNameDisplay").textContent = data.auditor_id;
+}
+
+/**
+ * Fallback UI if session missing
+ */
+function displayPipelineFailureFallback() {
+  document.getElementById("lblReportId").textContent    = "SESSION EXPIRED";
+  document.getElementById("lblIndustryId").textContent  = "-";
+  document.getElementById("lblAuditorId").textContent   = "-";
+  document.getElementById("lblSubmittedAt").textContent = "-";
+  document.getElementById("lblReportHash").textContent  = "-";
+
+  document.getElementById("auditorNameDisplay").textContent =
+    "Session Not Available";
+}
+
+/**
+ * Logout / session clear handler
+ */
+function bindActionLogoffBehavior() {
+  const btn = document.getElementById("btnContinue");
+
+  btn.addEventListener("click", async () => {
+
+    btn.textContent = "Clearing Session...";
+    btn.style.opacity = "0.7";
+
+    await fetch("/api/auth/logout", { method: "POST" });
+
+    window.location.href = "/login";
+  });
+}
+</script>
+</body>
+</html>
