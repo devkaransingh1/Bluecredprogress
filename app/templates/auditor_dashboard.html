@@ -13,7 +13,7 @@
 <!-- NAVBAR -->
 <nav class="navbar">
   <div class="nav-inner">
-    <a href="{{url_for('auth.home')}}" class="brand">
+    <a href="/" class="brand">
       <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
         <rect width="32" height="32" rx="6" fill="#1A56A0"/>
         <path d="M8 16 C8 11.6 11.6 8 16 8 C18.8 8 21.3 9.4 22.8 11.6" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
@@ -182,7 +182,7 @@
           <span>⚠</span>
           <span>Inspecting a facility whose credentials have not been issued yet?</span>
         </div>
-        <a href="register.html" class="btn-register">
+        <a href="{{url_for('indus.industry_registeration')}}" class="btn-register">
           🏭 &nbsp; Industry not listed? Register through BlueCred
         </a>
       </div>

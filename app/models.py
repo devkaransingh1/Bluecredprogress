@@ -1,6 +1,7 @@
 from app import db
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timezone
+from datetime import datetime
 
 
 
@@ -51,14 +52,6 @@ class Industry(db.Model):
         db.String(50)
     )
 
-    auditor_id = db.Column(
-        db.String(50)
-    )
-
-    last_audit_date = db.Column(
-        db.Date
-    )
-
     verified = db.Column(
         db.Boolean,
         default=True
@@ -68,6 +61,8 @@ class Industry(db.Model):
         db.DateTime,
         default=lambda: datetime.now(timezone.utc)
     )
+
+    reports = db.relationship('AuditReport', backref='industry', lazy=True)
 
 
 
@@ -99,7 +94,11 @@ class AuditReport(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
 
-    industry_id = db.Column(db.String(50), nullable=False)
+    industry_id = db.Column(
+    db.String(50),
+    db.ForeignKey('industry.industry_id'),
+    nullable=False
+)
     auditor_id = db.Column(db.String(50), nullable=False)
 
     pm25 = db.Column(db.Numeric, default=0)

@@ -12,3 +12,16 @@ def industries():
     return render_template('industries.html')
 
 
+@indus_bp.route('/industry/reports/<industry_id>')
+def industry_reports(industry_id):
+
+    return render_template(
+        "industry_reports.html",
+        industry_id=industry_id
+    )
+
+@indus_bp.route('/industry_registeration')
+def industry_registeration():
+    if 'auditor' not in session:
+        return redirect(url_for('auth.login'))
+    return render_template('industry_register.html')

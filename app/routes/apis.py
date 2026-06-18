@@ -12,9 +12,19 @@ apis_bp = Blueprint('apis',__name__)
 
 @apis_bp.route('/api/fetch_industries')
 def fetch_industries():
+
     industries = Industry.query.all()
     data = []
+
     for industry in industries:
+
+        latest_report = (
+            AuditReport.query
+            .filter_by(industry_id=industry.industry_id)
+            .order_by(AuditReport.submitted_at.desc())
+            .first()
+        )
+
         data.append({
             "industry_id": industry.industry_id,
             "name": industry.name,
@@ -22,12 +32,15 @@ def fetch_industries():
             "location": industry.location,
             "bluecred_score": industry.bluecred_score,
             "pollution_status": industry.pollution_status,
-            "auditor_id": industry.auditor_id,
-            "last_audit_date": str(industry.last_audit_date),
+
+            # 👇 derived from AuditReport (NOT Industry)
+            "auditor_id": latest_report.auditor_id if latest_report else None,
+            "last_audit_date": latest_report.submitted_at.date().isoformat() if latest_report else None,
+
             "verified": industry.verified
         })
-    return jsonify(data)
 
+    return jsonify(data)
 
 
 
@@ -194,4 +207,65 @@ def logout():
     return jsonify({
         "success": True,
         "message": "Session cleared"
+    })
+
+
+
+@apis_bp.route('/api/public/industry/<industry_id>/reports', methods=['GET'])
+def get_industry_reports(industry_id):
+
+    reports = AuditReport.query.filter_by(
+        industry_id=industry_id
+    ).order_by(
+        AuditReport.submitted_at.desc()
+    ).all()
+
+
+    if not reports:
+        return jsonify({
+            "success": False,
+            "message": "No audit reports found"
+        }),404
+
+
+
+    data=[]
+
+
+    for report in reports:
+
+        data.append({
+
+            "report_id":
+            f"REP-{report.id:06d}",
+
+
+            "industry_id":
+            report.industry_id,
+
+
+            "audit_date":
+            report.submitted_at.strftime("%d-%m-%Y"),
+
+
+            "audit_time":
+            report.submitted_at.strftime("%H:%M:%S"),
+
+
+            "auditor_id":
+            report.auditor_id,
+
+
+            "decision":
+            report.audit_decision
+
+        })
+
+
+    return jsonify({
+
+        "success":True,
+        "total_reports":len(data),
+        "reports":data
+
     })

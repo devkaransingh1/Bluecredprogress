@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BlueCred — Industry Audit History</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/industry_reports.css') }}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="/" class="brand">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="6" fill="#1A56A0"/>
+        <path d="M8 16 C8 11.6 11.6 8 16 8 C18.8 8 21.3 9.4 22.8 11.6" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <path d="M24 16 C24 20.4 20.4 24 16 24 C13.2 24 10.7 22.6 9.2 20.4" stroke="#4CAF82" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <circle cx="16" cy="16" r="2.5" fill="white"/>
+        <circle cx="22.8" cy="11.6" r="1.8" fill="#4CAF82"/>
+        <circle cx="9.2" cy="20.4" r="1.8" fill="white"/>
+      </svg>
+      <span class="brand-name">BlueCred</span>
+    </a>
+    <div class="nav-center">
+      <span class="nav-page-label">Audit Report History</span>
+    </div>
+    <div class="nav-right">
+      <a href="/industries" class="btn-nav">← All Industries</a>
+    </div>
+  </div>
+</nav>
+
+<!-- TERMINAL STRIP -->
+<div class="terminal-strip">
+  <div class="strip-container">
+    <div class="strip-left">
+      <span class="strip-tag">REGISTRY: <span class="mono strip-hl">Append-Only Audit System</span></span>
+      <span class="strip-sep">|</span>
+      <span class="strip-tag">ACCESS: <span class="mono strip-hl">READ-ONLY</span></span>
+    </div>
+    <div class="strip-right">
+      <span class="strip-dot"></span>
+      <span class="strip-tag">LIVE DATABASE</span>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="header-container">
+
+    <!-- Skeleton shown while loading -->
+    <div id="headerSkeleton">
+      <div class="sk-line sk-title"></div>
+      <div class="sk-line sk-sub"></div>
+    </div>
+
+    <!-- Real header injected by JS -->
+    <div id="headerContent" style="display:none;">
+      <div class="header-top">
+        <div class="header-text">
+          <span class="header-eyebrow">INDUSTRY AUDIT HISTORY</span>
+          <h1 class="header-title" id="headerTitle">—</h1>
+          <div class="header-meta">
+            <span class="meta-chip mono" id="headerIndustryId">—</span>
+            <span class="dot-sep">·</span>
+            <span class="meta-chip verified-chip">✓ BlueCred Verified</span>
+          </div>
+        </div>
+        <div class="header-stat">
+          <span class="stat-num" id="headerTotal">—</span>
+          <span class="stat-label">Total Audit Reports</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="main-container">
+
+    <!-- LOADING STATE -->
+    <div id="stateLoading" class="state-block">
+      <div class="loading-wrap">
+        <span class="loader-ring"></span>
+        <span>Fetching audit records from BlueCred ledger…</span>
+      </div>
+    </div>
+
+    <!-- ERROR STATE -->
+    <div id="stateError" class="state-block" style="display:none;">
+      <div class="error-wrap">
+        <span class="state-icon">⚠</span>
+        <h3>Unable to Load Records</h3>
+        <p id="errorMsg">An error occurred while fetching audit data. Please try again.</p>
+        <button class="btn-retry" id="retryBtn">Retry</button>
+      </div>
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div id="stateEmpty" class="state-block" style="display:none;">
+      <div class="empty-wrap">
+        <span class="state-icon">📋</span>
+        <h3>No Audit Reports Found</h3>
+        <p>No audit records have been submitted for this industry yet.</p>
+      </div>
+    </div>
+
+    <!-- REPORTS LIST -->
+    <div id="stateReports" style="display:none;">
+
+      <div class="reports-meta">
+        <span id="reportsSummary" class="reports-summary"></span>
+      </div>
+
+      <!-- Timeline + cards injected here -->
+      <div class="timeline" id="reportsList"></div>
+
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <span>© 2026 BlueCred · All audit records are permanently stored and publicly accessible.</span>
+  </div>
+</footer>
+
+<script>
+/**
+ * BlueCred — Industry Audit Reports History
+ * ------------------------------------------
+ * API: GET /api/public/industry/<industry_id>/reports
+ *
+ * Response:
+ * {
+ *   "success": true,
+ *   "total_reports": 2,
+ *   "reports": [
+ *     {
+ *       "report_id": "REP-000002",
+ *       "industry_id": "IND-00101",
+ *       "audit_date": "19-06-2026",
+ *       "audit_time": "13:24:34",
+ *       "auditor_id": "AUD-2045",
+ *       "decision": "Passed"
+ *     }, ...
+ *   ]
+ * }
+ */
+
+// ── Extract industry ID from URL ──────────────────────────────
+// Route: /industry/reports/<industry_id>
+const industryId = window.location.pathname.split('/').pop();
+
+// ── Helpers ───────────────────────────────────────────────────
+const el = (id) => document.getElementById(id);
+
+function showState(state) {
+  ['stateLoading', 'stateError', 'stateEmpty', 'stateReports'].forEach(s => {
+    el(s).style.display = s === state ? 'block' : 'none';
+  });
+}
+
+// ── Decision badge config ──────────────────────────────────────
+function decisionBadge(decision) {
+  const map = {
+    'Passed':               { cls: 'badge-pass',  icon: '✓' },
+    'Conditional Approval': { cls: 'badge-cond',  icon: '◑' },
+    'Failed':               { cls: 'badge-fail',  icon: '✕' },
+  };
+  const cfg = map[decision] || { cls: 'badge-unknown', icon: '?' };
+  return `<span class="decision-badge ${cfg.cls}">${cfg.icon} ${decision}</span>`;
+}
+
+// ── Render a single report card ────────────────────────────────
+function renderCard(report, index, isLatest) {
+  return `
+    <div class="timeline-item">
+      <div class="timeline-marker ${isLatest ? 'marker-latest' : ''}"></div>
+      <div class="report-card ${isLatest ? 'card-latest' : ''}">
+
+        <div class="card-header">
+          <div class="card-header-left">
+            <span class="report-id mono">${report.report_id}</span>
+            ${isLatest ? '<span class="latest-tag">Latest Audit</span>' : ''}
+          </div>
+          <div class="card-header-right">
+            ${decisionBadge(report.decision)}
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="card-grid">
+
+            <div class="card-field">
+              <span class="field-label">Industry ID</span>
+              <span class="field-value mono">${report.industry_id}</span>
+            </div>
+
+            <div class="card-field">
+              <span class="field-label">Audit Date</span>
+              <span class="field-value">📅 ${report.audit_date}</span>
+            </div>
+
+            <div class="card-field">
+              <span class="field-label">Audit Time</span>
+              <span class="field-value mono">⏱ ${report.audit_time}</span>
+            </div>
+
+            <div class="card-field">
+              <span class="field-label">Auditor</span>
+              <span class="field-value mono auditor-val">${report.auditor_id}</span>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a href="/industry/report/${report.report_id}" class="btn-view-detail">
+            View Details <span class="arrow">→</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  `;
+}
+
+// ── Fetch and render ───────────────────────────────────────────
+async function loadReports() {
+  showState('stateLoading');
+  el('headerSkeleton').style.display = 'block';
+  el('headerContent').style.display  = 'none';
+
+  try {
+    const res = await fetch(`/api/public/industry/${industryId}/reports`, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.message || `Server returned ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    if (!data.success) throw new Error(data.message || 'API returned failure.');
+
+    // ── Populate header ─────────────────────────────────────
+    const reports = data.reports || [];
+    const total   = data.total_reports ?? reports.length;
+
+    // Try to get industry name from first report or fall back to ID
+    const displayId = reports.length > 0 ? reports[0].industry_id : industryId;
+
+    el('headerTitle').textContent      = `Audit Report History`;
+    el('headerIndustryId').textContent = displayId;
+    el('headerTotal').textContent      = total;
+
+    el('headerSkeleton').style.display = 'none';
+    el('headerContent').style.display  = 'block';
+
+    // ── Empty state ─────────────────────────────────────────
+    if (reports.length === 0) {
+      showState('stateEmpty');
+      return;
+    }
+
+    // ── Render cards ─────────────────────────────────────────
+    el('reportsSummary').textContent =
+      `${total} audit record${total !== 1 ? 's' : ''} found for ${displayId} — most recent first.`;
+
+    el('reportsList').innerHTML = reports.map((r, i) =>
+      renderCard(r, i, i === 0)
+    ).join('');
+
+    showState('stateReports');
+
+  } catch (err) {
+    console.error('[BlueCred] Failed to load reports:', err);
+    el('headerSkeleton').style.display = 'none';
+    el('headerContent').style.display  = 'block';
+    el('headerTitle').textContent      = 'Audit History';
+    el('headerIndustryId').textContent = industryId;
+    el('headerTotal').textContent      = '—';
+    el('errorMsg').textContent         = err.message || 'Network error. Please check your connection.';
+    showState('stateError');
+  }
+}
+
+// ── Retry button ───────────────────────────────────────────────
+el('retryBtn').addEventListener('click', loadReports);
+
+// ── Init ───────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', loadReports);
+</script>
+
+</body>
+</html>

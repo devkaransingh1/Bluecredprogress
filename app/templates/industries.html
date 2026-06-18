@@ -261,7 +261,9 @@ function renderCards(data) {
 
       <div class="card-footer">
         <span class="auditor-tag">Last Audit: <strong>${ind.lastAudit}</strong></span>
-        <a href="#" class="view-link">View Report →</a>
+        <a href="/industry/reports/${ind.id}" class="view-link">
+  View Reports →
+</a>
       </div>
     </div>
   `).join("");

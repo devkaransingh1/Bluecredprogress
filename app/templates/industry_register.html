@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BlueCred — Register Your Industry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/industry_register.css') }}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="/" class="brand">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="6" fill="#1A56A0"/>
+        <path d="M8 16 C8 11.6 11.6 8 16 8 C18.8 8 21.3 9.4 22.8 11.6" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <path d="M24 16 C24 20.4 20.4 24 16 24 C13.2 24 10.7 22.6 9.2 20.4" stroke="#4CAF82" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <circle cx="16" cy="16" r="2.5" fill="white"/>
+        <circle cx="22.8" cy="11.6" r="1.8" fill="#4CAF82"/>
+        <circle cx="9.2" cy="20.4" r="1.8" fill="white"/>
+      </svg>
+      <span class="brand-name">BlueCred</span>
+    </a>
+    <div class="nav-center"><span class="nav-page-label">Industry Registration</span></div>
+    <div class="nav-right">
+      <a href="{{url_for('auth.auditor_dashboard')}}" class="btn-nav">← Back to Portal</a>
+    </div>
+  </div>
+</nav>
+
+<!-- TERMINAL STRIP -->
+<div class="terminal-strip">
+  <div class="strip-inner">
+    <div class="strip-left">
+      <span class="strip-tag">SECTION: <span class="mono strip-hl">INDUSTRY ONBOARDING</span></span>
+      <span class="strip-sep">|</span>
+      <span class="strip-tag">ACCESS: <span class="mono strip-hl">PUBLIC</span></span>
+    </div>
+    <div class="strip-right">
+      <span class="strip-dot"></span>
+      <span class="strip-tag">NO SELF-REGISTRATION</span>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE BANNER -->
+<div class="page-banner">
+  <div class="page-container">
+    <span class="eyebrow">INDUSTRY REGISTRATION</span>
+    <h1 class="banner-title">Register Your Industry with BlueCred</h1>
+    <p class="banner-sub">
+      Direct self-registration is not available. All industries must be verified and onboarded by the BlueCred team before receiving a Site Access Code and appearing on the public compliance ledger.
+    </p>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+<div class="page-container main-grid">
+
+  <!-- ===== LEFT COLUMN ===== -->
+  <div class="left-col">
+
+    <!-- Why no self-registration -->
+    <section class="content-section">
+      <span class="section-label">WHY SELF-REGISTRATION IS NOT PERMITTED</span>
+      <h2 class="section-title">Open registration would undermine the entire compliance system.</h2>
+      <p class="section-body">
+        BlueCred's credibility rests on the fact that every industry in the system has been independently verified. If any company could register itself, it could manipulate its own compliance record, appoint fake auditors, and undermine the integrity of data that regulators, the public, and enforcement agencies rely on.
+      </p>
+    </section>
+
+    <!-- Risk cards -->
+    <section class="content-section">
+      <span class="section-label">WHAT SELF-REGISTRATION COULD LEAD TO</span>
+      <div class="risks-grid">
+
+        <div class="risk-card">
+          <div class="risk-top"><span class="risk-icon">⚠</span><h3>Falsified Compliance Records</h3></div>
+          <p>Industries could register themselves, submit inflated compliance scores, and project a false clean record on the public dashboard — deceiving regulators and communities.</p>
+        </div>
+
+        <div class="risk-card">
+          <div class="risk-top"><span class="risk-icon">🔓</span><h3>Unverified Site Access Codes</h3></div>
+          <p>Without team-issued credentials, any entity could generate fake Site Access Codes, allowing unqualified or malicious actors to submit audit reports for facilities they have no authority over.</p>
+        </div>
+
+        <div class="risk-card">
+          <div class="risk-top"><span class="risk-icon">📉</span><h3>Pollution Data Manipulation</h3></div>
+          <p>Self-registered industries could block or delay legitimate audits, suppress violation records, and prevent accurate pollution data from entering the tamper-proof ledger.</p>
+        </div>
+
+        <div class="risk-card">
+          <div class="risk-top"><span class="risk-icon">⚖</span><h3>Legal & Regulatory Liability</h3></div>
+          <p>Compliance records carry legal standing. Unverified entries could expose regulatory bodies to legal challenges and invalidate enforcement actions taken on the basis of that data.</p>
+        </div>
+
+        <div class="risk-card">
+          <div class="risk-top"><span class="risk-icon">🧠</span><h3>AI Prediction Corruption</h3></div>
+          <p>BlueCred's risk prediction models are trained on verified audit data. False entries from unverified industries would silently degrade the model — causing missed violations and incorrect risk classifications.</p>
+        </div>
+
+        <div class="risk-card">
+          <div class="risk-top"><span class="risk-icon">🌍</span><h3>Loss of Public Trust</h3></div>
+          <p>The public uses BlueCred to verify whether industries near them are compliant. Self-registration would break that trust completely, making the entire transparency platform meaningless.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Verification process -->
+    <section class="content-section">
+      <span class="section-label">THE REGISTRATION PROCESS</span>
+      <h2 class="section-title">What happens after you contact us.</h2>
+      <div class="process-steps">
+
+        <div class="proc-step">
+          <div class="proc-num mono">01</div>
+          <div>
+            <strong>Submit Your Application</strong>
+            <p>Contact the BlueCred Industry Registration department via email or phone with your industry details. A full list of what to include is on the right.</p>
+          </div>
+        </div>
+
+        <div class="proc-step">
+          <div class="proc-num mono">02</div>
+          <div>
+            <strong>Document Verification</strong>
+            <p>The BlueCred team verifies your registration documents, industry licence, and legal entity status against official government records. This takes 5–7 business days.</p>
+          </div>
+        </div>
+
+        <div class="proc-step">
+          <div class="proc-num mono">03</div>
+          <div>
+            <strong>Site Inspection Scheduling</strong>
+            <p>A certified BlueCred auditor is assigned to your facility for an initial baseline inspection before the industry is added to the public compliance ledger.</p>
+          </div>
+        </div>
+
+        <div class="proc-step">
+          <div class="proc-num mono">04</div>
+          <div>
+            <strong>Credential Issuance</strong>
+            <p>Upon successful verification, your industry is assigned a unique Industry ID and Site Access Code by the admin team — sent to your official registered contact only.</p>
+          </div>
+        </div>
+
+        <div class="proc-step">
+          <div class="proc-num mono">05</div>
+          <div>
+            <strong>Listed on Public Ledger</strong>
+            <p>Your industry appears on the BlueCred public dashboard with a verified badge. Ongoing compliance is maintained through regular scheduled and surprise audits.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ===== RIGHT COLUMN ===== -->
+  <div class="right-col">
+
+    <!-- Contact card -->
+    <div class="contact-card">
+      <div class="contact-card-header">
+        <span class="eyebrow" style="color:rgba(255,255,255,0.55);">APPLY FOR INDUSTRY REGISTRATION</span>
+        <h2>Contact BlueCred Team</h2>
+        <p>Reach out to the industry registration department. A team member will respond within 3 business days.</p>
+      </div>
+
+      <div class="contact-methods">
+        <div class="contact-row">
+          <span class="c-icon">📧</span>
+          <div>
+            <span class="c-label">Email — Industry Registration</span>
+            <a href="mailto:industry@bluecred.gov.in" class="c-val">industry@bluecred.gov.in</a>
+          </div>
+        </div>
+        <div class="contact-row">
+          <span class="c-icon">📞</span>
+          <div>
+            <span class="c-label">Phone — Registration Helpdesk</span>
+            <a href="tel:+911800XXXXXXX" class="c-val">1800-XXX-XXXX (Toll Free)</a>
+          </div>
+        </div>
+        <div class="contact-row">
+          <span class="c-icon">🏢</span>
+          <div>
+            <span class="c-label">Office — Walk-in Verification</span>
+            <span class="c-val">BlueCred Compliance Office, New Delhi<br>Mon–Fri · 10:00 AM – 5:00 PM IST</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- What to include -->
+      <div class="what-to-send">
+        <span class="wts-label">WHAT TO INCLUDE IN YOUR APPLICATION</span>
+        <ul>
+          <li><span>✓</span>Legal name of the industry / company</li>
+          <li><span>✓</span>Factory / Facility Registration Number</li>
+          <li><span>✓</span>Industry type and primary activity</li>
+          <li><span>✓</span>Complete operational address with PIN code</li>
+          <li><span>✓</span>Name and designation of the authorised signatory</li>
+          <li><span>✓</span>Official contact email and phone number</li>
+          <li><span>✓</span>Existing pollution control board certificate (if any)</li>
+          <li><span>✓</span>GST / PAN registration number</li>
+        </ul>
+      </div>
+
+      <div class="response-note">
+        <span>🕐</span>
+        <span>Average response: <strong>3 business days.</strong> Applications after Friday 3pm are processed the following Monday.</span>
+      </div>
+    </div>
+
+    <!-- Already registered? -->
+    <div class="registered-card">
+      <h3>Already registered?</h3>
+      <p>If your industry is already listed on BlueCred and you need your Site Access Code re-issued or have a credential issue, contact support directly.</p>
+      <a href="mailto:support@bluecred.gov.in" class="c-link">support@bluecred.gov.in →</a>
+    </div>
+
+    <!-- Back to auditor -->
+    <a href="{{url_for('auth.auditor_dashboard')}}" class="back-card">
+      <div>
+        <strong>Return to Auditor Portal</strong>
+        <p>Go back to the report submission dashboard</p>
+      </div>
+      <span class="back-arrow">→</span>
+    </a>
+
+    
+
+  </div>
+
+</div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="fbrand">
+      <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="6" fill="#1A56A0"/>
+        <path d="M8 16 C8 11.6 11.6 8 16 8 C18.8 8 21.3 9.4 22.8 11.6" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <path d="M24 16 C24 20.4 20.4 24 16 24 C13.2 24 10.7 22.6 9.2 20.4" stroke="#4CAF82" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <circle cx="16" cy="16" r="2.5" fill="white"/>
+        <circle cx="22.8" cy="11.6" r="1.8" fill="#4CAF82"/>
+        <circle cx="9.2" cy="20.4" r="1.8" fill="white"/>
+      </svg>
+      BlueCred
+    </div>
+    <div class="footer-links">
+      <a href="/">Home</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Documentation</a>
+    </div>
+    <span class="footer-copy">© 2026 BlueCred. Industry registration requires verified onboarding only.</span>
+  </div>
+</footer>
+
+</body>
+</html>
