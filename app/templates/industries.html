@@ -111,8 +111,14 @@
 <!-- INDUSTRY GRID -->
 <div class="page-container">
   <div class="industry-grid" id="industryGrid">
-    <!-- Cards injected by JS -->
+
+  <div class="loading-card">
+    <div class="loader"></div>
+    <h3>Loading Industries...</h3>
+    <p>Fetching verified records from append-only database</p>
   </div>
+
+</div>
   <div class="no-results" id="noResults" style="display:none;">
     <span class="no-icon">🔍</span>
     <h3>No industries found</h3>
@@ -162,8 +168,15 @@ async function loadIndustries() {
 
     const response = await fetch("/api/fetch_industries");
 
-    const data = await response.json();
 
+if(!response.ok){
+    throw new Error("Server error: " + response.status);
+}
+
+
+const data = await response.json();
+
+console.log("Industries loaded:", data);
 
     industries = data.map(ind => ({
       id: ind.industry_id,
@@ -187,7 +200,14 @@ async function loadIndustries() {
 
     console.error("Error loading industries:", error);
 
-  }
+    document.getElementById("industryGrid").innerHTML = `
+        <div class="loading-card">
+            <h3>Failed to load industries</h3>
+            <p>${error.message}</p>
+        </div>
+    `;
+
+}
 
 }
 
