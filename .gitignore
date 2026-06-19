@@ -1,6 +1,4 @@
-__pycache__/
-*.pyc
-instance/
-venv/
 .venv/
-*.db
+.env
+__pycache__/
+bluecred_backup.sql
