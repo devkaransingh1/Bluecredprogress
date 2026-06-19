@@ -25,3 +25,16 @@ def industry_registeration():
     if 'auditor' not in session:
         return redirect(url_for('auth.login'))
     return render_template('industry_register.html')
+
+
+@indus_bp.route('/industry/report/<industry_id>/<report_id>')
+def report_details(industry_id, report_id):
+
+    if 'auditor' in session:
+        return redirect(url_for('auth.auditor_dashboard'))
+
+    return render_template(
+        "report_details.html",
+        industry_id=industry_id,
+        report_id=report_id
+    )

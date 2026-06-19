@@ -100,6 +100,11 @@ class AuditReport(db.Model):
     nullable=False
 )
     auditor_id = db.Column(db.String(50), nullable=False)
+    report_id = db.Column(
+    db.String(50),
+    unique=True,
+    nullable=False
+)
 
     pm25 = db.Column(db.Numeric, default=0)
     pm10 = db.Column(db.Numeric, default=0)

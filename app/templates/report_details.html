@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BlueCred — Audit Report Details</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{url_for('static',filename='css/report_details.css')}}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="/" class="brand">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="6" fill="#1A56A0"/>
+        <path d="M8 16 C8 11.6 11.6 8 16 8 C18.8 8 21.3 9.4 22.8 11.6" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <path d="M24 16 C24 20.4 20.4 24 16 24 C13.2 24 10.7 22.6 9.2 20.4" stroke="#4CAF82" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <circle cx="16" cy="16" r="2.5" fill="white"/>
+        <circle cx="22.8" cy="11.6" r="1.8" fill="#4CAF82"/>
+        <circle cx="9.2" cy="20.4" r="1.8" fill="white"/>
+      </svg>
+      <span class="brand-name">BlueCred</span>
+    </a>
+    <div class="nav-center"><span class="nav-page-label">Audit Report Verification</span></div>
+    <div class="nav-right">
+      <span class="verified-chip">✓ Verified Audit</span>
+    </div>
+  </div>
+</nav>
+
+<main class="main">
+<div class="page-container">
+
+  <!-- LOADING STATE -->
+  <div class="state-block" id="stateLoading">
+    <div class="loading-wrap">
+      <span class="loader-ring"></span>
+      <span>Fetching audit report from the append-only compliance database…</span>
+    </div>
+  </div>
+
+  <!-- ERROR STATE -->
+  <div class="state-block" id="stateError" style="display:none;">
+    <div class="error-wrap">
+      <span class="state-icon">⚠</span>
+      <h3>Unable to Load Audit Report</h3>
+      <p id="errorMsg">The requested report could not be retrieved. Please check the link or try again.</p>
+      <button class="btn-retry" id="retryBtn">Retry</button>
+    </div>
+  </div>
+
+  <!-- REPORT CONTENT -->
+  <div id="reportContent" style="display:none;">
+
+    <!-- ===== HEADER CARD ===== -->
+    <section class="header-card">
+      <div class="header-card-top">
+        <span class="header-eyebrow">COMPLIANCE RECORD</span>
+        <h1 class="header-title">Environmental Audit Report</h1>
+        <p class="header-subtitle">Complete inspection record and compliance verification details</p>
+      </div>
+
+      <div class="header-badges">
+        <div class="hbadge">
+          <span class="hbadge-label">Report ID</span>
+          <span class="hbadge-value mono" id="badgeReportId">—</span>
+        </div>
+        <div class="hbadge">
+          <span class="hbadge-label">Industry ID</span>
+          <span class="hbadge-value mono" id="badgeIndustryId">—</span>
+        </div>
+        <div class="hbadge hbadge-status">
+          <span class="hbadge-label">Audit Status</span>
+          <span class="hbadge-value status-pill" id="badgeStatus">—</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== METADATA CARD ===== -->
+    <section class="meta-card">
+      <div class="meta-grid">
+        <div class="meta-field">
+          <span class="meta-label">Industry ID</span>
+          <span class="meta-value mono" id="metaIndustryId">—</span>
+        </div>
+        <div class="meta-field">
+          <span class="meta-label">Report ID</span>
+          <span class="meta-value mono" id="metaReportId">—</span>
+        </div>
+        <div class="meta-field">
+          <span class="meta-label">Auditor ID</span>
+          <span class="meta-value mono" id="metaAuditorId">—</span>
+        </div>
+        <div class="meta-field">
+          <span class="meta-label">Submitted Date</span>
+          <span class="meta-value" id="metaDate">—</span>
+        </div>
+        <div class="meta-field">
+          <span class="meta-label">Submitted Time</span>
+          <span class="meta-value mono" id="metaTime">—</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ENVIRONMENTAL MEASUREMENTS ===== -->
+    <section class="section-block">
+      <h2 class="section-heading">Environmental Measurements</h2>
+
+      <!-- Air Quality -->
+      <div class="measure-card">
+        <div class="measure-card-head">
+          <span class="measure-icon">🌫</span>
+          <h3>Air Quality</h3>
+        </div>
+        <div class="metric-grid" id="airMetrics">
+          <!-- populated by JS -->
+        </div>
+      </div>
+
+      <!-- Water Quality -->
+      <div class="measure-card">
+        <div class="measure-card-head">
+          <span class="measure-icon">💧</span>
+          <h3>Water Quality</h3>
+        </div>
+        <div class="metric-grid" id="waterMetrics">
+          <!-- populated by JS -->
+        </div>
+      </div>
+
+      <!-- Waste Management -->
+      <div class="measure-card">
+        <div class="measure-card-head">
+          <span class="measure-icon">🗑</span>
+          <h3>Waste Management</h3>
+        </div>
+        <div class="waste-grid" id="wasteGrid">
+          <!-- populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== INSPECTION ASSESSMENT ===== -->
+    <section class="section-block">
+      <h2 class="section-heading">Inspection Assessment</h2>
+
+      <div class="text-card">
+        <span class="text-card-label">Observations</span>
+        <p class="text-card-body" id="observationsText">—</p>
+      </div>
+
+      <div class="text-card">
+        <span class="text-card-label">Recommendations</span>
+        <p class="text-card-body" id="recommendationsText">—</p>
+      </div>
+    </section>
+
+    <!-- ===== COMPLIANCE DECISION ===== -->
+    <section class="decision-card" id="decisionCard">
+      <span class="decision-label">Audit Decision</span>
+      <div class="decision-value" id="decisionValue">—</div>
+    </section>
+
+    <!-- ===== AUDITOR REMARKS ===== -->
+    <section class="section-block">
+      <div class="text-card remarks-card">
+        <span class="text-card-label">Final Auditor Remarks</span>
+        <p class="text-card-body" id="remarksText">—</p>
+      </div>
+    </section>
+
+    <!-- ===== SECURITY VERIFICATION ===== -->
+    <section class="security-card">
+      <div class="security-head">
+        <span class="security-icon">🛡</span>
+        <h2>Digital Audit Verification</h2>
+      </div>
+      <div class="security-grid">
+        <div class="security-field">
+          <span class="security-label">Report Hash</span>
+          <span class="security-value mono hash-value" id="reportHash">—</span>
+        </div>
+        <div class="security-field">
+          <span class="security-label">Immutable Record Timestamp</span>
+          <span class="security-value mono" id="recordTimestamp">—</span>
+        </div>
+      </div>
+      <p class="security-note">This record was written to BlueCred's append-only compliance database. Entries cannot be edited or deleted after submission — only new, time-stamped entries can be appended.</p>
+    </section>
+
+    <!-- ===== AI ANALYTICS PLACEHOLDER ===== -->
+    <section class="ai-card">
+      <div class="ai-glow"></div>
+      <div class="ai-content">
+        <span class="ai-tag">⚡ UPCOMING FEATURE</span>
+        <h2 class="ai-title">AI Industry Analytics &amp; Prediction</h2>
+        <p class="ai-desc">AI powered environmental trend analysis, compliance prediction, and risk forecasting will appear here.</p>
+        <button class="btn-ai-disabled" disabled>
+          View AI Analytics → <span class="ai-soon">Coming Soon</span>
+        </button>
+      </div>
+    </section>
+
+  </div>
+
+</div>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <span>© 2026 BlueCred · All audit records are permanently stored in an append-only compliance database.</span>
+  </div>
+</footer>
+
+<script>
+/**
+ * BlueCred — Audit Report Details Page
+ * --------------------------------------
+ * Route:  /industry/report/<industry_id>/<report_id>
+ * API:    GET /api/audit/report/<industry_id>/<report_id>
+ *
+ * Expected JSON response:
+ * {
+ *   success: true,
+ *   report_id: "REP-000003",
+ *   industry_id: "IND-00101",
+ *   auditor_id: "AUD-2045",
+ *   air: { pm25, pm10, so2, nox, co },
+ *   water: { ph, bod, cod, tds },
+ *   waste: { chemical, hazardous, facility, method },
+ *   assessment: { observations, recommendations, decision, remarks },
+ *   submitted_at: "2026-06-19 00:12:13",
+ *   hash: "..."
+ * }
+ */
+
+const el = (id) => document.getElementById(id);
+
+// ── Extract industry_id and report_id from URL ────────────────
+// Route: /industry/report/<industry_id>/<report_id>
+const pathParts = window.location.pathname.split('/').filter(Boolean);
+const reportId   = pathParts.pop();
+const industryId = pathParts.pop();
+
+// ── State toggling ──────────────────────────────────────────────
+function showState(state) {
+  el('stateLoading').style.display   = state === 'loading' ? 'block' : 'none';
+  el('stateError').style.display     = state === 'error'   ? 'block' : 'none';
+  el('reportContent').style.display  = state === 'content' ? 'block' : 'none';
+}
+
+// ── Status / decision presentation helpers ─────────────────────
+function statusConfig(decision) {
+  const map = {
+    'Passed':               { cls: 'status-pass', icon: '✓', label: 'PASSED' },
+    'Conditional Approval': { cls: 'status-cond', icon: '⚠', label: 'CONDITIONAL APPROVAL' },
+    'Failed':               { cls: 'status-fail', icon: '✕', label: 'FAILED' }
+  };
+  return map[decision] || { cls: 'status-unknown', icon: '?', label: (decision || 'UNKNOWN').toUpperCase() };
+}
+
+// ── Metric card builder (air / water) ───────────────────────────
+function metricCard(label, value, unit) {
+  const displayVal = (value === null || value === undefined) ? '—' : value;
+  return `
+    <div class="metric-card">
+      <span class="metric-label">${label}</span>
+      <span class="metric-value">${displayVal}</span>
+      <span class="metric-unit">${unit}</span>
+    </div>
+  `;
+}
+
+function renderAirMetrics(air) {
+  if (!air) { el('airMetrics').innerHTML = '<p class="no-data">No air quality data recorded.</p>'; return; }
+  el('airMetrics').innerHTML = [
+    metricCard('PM2.5', air.pm25, 'μg/m³'),
+    metricCard('PM10',  air.pm10, 'μg/m³'),
+    metricCard('SO₂',   air.so2,  'ppm'),
+    metricCard('NOx',   air.nox,  'ppm'),
+    metricCard('CO',    air.co,   'ppm'),
+  ].join('');
+}
+
+function renderWaterMetrics(water) {
+  if (!water) { el('waterMetrics').innerHTML = '<p class="no-data">No water quality data recorded.</p>'; return; }
+  el('waterMetrics').innerHTML = [
+    metricCard('pH',  water.ph,  ''),
+    metricCard('BOD', water.bod, 'mg/L'),
+    metricCard('COD', water.cod, 'mg/L'),
+    metricCard('TDS', water.tds, 'mg/L'),
+  ].join('');
+}
+
+function wasteTag(label, value) {
+  const isYesNo = typeof value === 'boolean';
+  const display = isYesNo ? (value ? 'Yes' : 'No') : (value || '—');
+  const cls = isYesNo ? (value ? 'tag-warn' : 'tag-ok') : 'tag-neutral';
+  return `
+    <div class="waste-field">
+      <span class="waste-label">${label}</span>
+      <span class="waste-value-tag ${cls}">${display}</span>
+    </div>
+  `;
+}
+
+function renderWaste(waste) {
+  if (!waste) { el('wasteGrid').innerHTML = '<p class="no-data">No waste management data recorded.</p>'; return; }
+  el('wasteGrid').innerHTML = [
+    wasteTag('Chemical Waste', waste.chemical),
+    wasteTag('Hazardous Waste', waste.hazardous),
+    wasteTag('Treatment Facility', waste.facility),
+    wasteTag('Disposal Method', waste.method),
+  ].join('');
+}
+
+// ── Main render function ────────────────────────────────────────
+function renderReport(data) {
+  // Header badges
+  el('badgeReportId').textContent   = data.report_id;
+  el('badgeIndustryId').textContent = data.industry_id;
+
+  const decision = data.assessment?.decision || 'Unknown';
+  const cfg = statusConfig(decision);
+
+  const statusBadge = el('badgeStatus');
+  statusBadge.textContent = cfg.label;
+  statusBadge.className = `hbadge-value status-pill ${cfg.cls}`;
+
+  // Metadata
+  el('metaIndustryId').textContent = data.industry_id;
+  el('metaReportId').textContent   = data.report_id;
+  el('metaAuditorId').textContent  = data.auditor_id;
+
+  if (data.submitted_at) {
+    const [datePart, timePart] = data.submitted_at.split(' ');
+    el('metaDate').textContent = datePart || '—';
+    el('metaTime').textContent = timePart || '—';
+  }
+
+  // Measurements
+  renderAirMetrics(data.air);
+  renderWaterMetrics(data.water);
+  renderWaste(data.waste);
+
+  // Assessment
+  el('observationsText').textContent   = data.assessment?.observations   || 'No observations recorded.';
+  el('recommendationsText').textContent = data.assessment?.recommendations || 'No recommendations recorded.';
+  el('remarksText').textContent        = data.assessment?.remarks        || 'No additional remarks provided.';
+
+  // Decision card
+  const decisionCard  = el('decisionCard');
+  const decisionValue = el('decisionValue');
+  decisionValue.innerHTML = `${cfg.icon} ${cfg.label}`;
+  decisionCard.className = `decision-card decision-${cfg.cls.replace('status-', '')}`;
+
+  // Security verification
+  el('reportHash').textContent      = data.hash || 'Not yet generated';
+  el('recordTimestamp').textContent = data.submitted_at || '—';
+
+  showState('content');
+}
+
+// ── Fetch report data ───────────────────────────────────────────
+async function loadReport() {
+  showState('loading');
+
+  if (!industryId || !reportId) {
+    el('errorMsg').textContent = 'Invalid report link — missing industry or report identifier.';
+    showState('error');
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/audit/report/${industryId}/${reportId}`, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (!res.ok) {
+      const errBody = await res.json().catch(() => ({}));
+      throw new Error(errBody.message || `Server returned ${res.status}`);
+    }
+
+    const data = await res.json();
+
+if(!res.ok){
+    throw new Error(data.error || "API failed");
+}
+
+    renderReport(data);
+
+  } catch (err) {
+    console.error('[BlueCred] Failed to load report:', err);
+    el('errorMsg').textContent = err.message || 'Network error. Please check your connection and try again.';
+    showState('error');
+  }
+}
+
+el('retryBtn').addEventListener('click', loadReport);
+
+document.addEventListener('DOMContentLoaded', loadReport);
+</script>
+
+</body>
+</html>

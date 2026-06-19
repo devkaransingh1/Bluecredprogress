@@ -29,7 +29,7 @@
       </a>
 
       <ul class="nav-links">
-        <li><a href="#">Home</a></li>
+        <li><a href="/">Home</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
         <li><a href="#features">Features</a></li>
@@ -75,7 +75,7 @@
         </h1>
         <p class="hero-tagline">Verified Environmental Compliance Infrastructure</p>
         <p class="hero-desc">
-         A transparent platform that records industrial pollution data, verifies environmental compliance, and ensures trust through blockchain-secured records and intelligent analysis.
+         A transparent platform that records industrial pollution data, verifies environmental compliance, and ensures trust through append-only database records and intelligent analysis.
         </p>
         <div class="hero-btns">
           <a href="{{url_for('indus.industries')}}" class="btn-primary">Explore Public Records</a>
@@ -178,7 +178,7 @@
           </div>
         </div>
         <div class="image-overlay-label">
-          <span>📍 Monitored Zone — Data recorded on BlueCred Ledger</span>
+          <span>📍 Monitored Zone — Data recorded on BlueCred</span>
         </div>
       </div>
     </div>
@@ -242,8 +242,8 @@
           <div class="step-item">
             <div class="step-circle">3</div>
             <div class="step-body">
-              <h3>Tamper-Proof Storage</h3>
-              <p>Each record is hashed and chained to previous entries. No record can be altered retroactively without breaking the chain.</p>
+              <h3>Tamper-Evident Storage</h3>
+              <p>Each audit record is secured with cryptographic hashing and stored in an append-only database. Any unauthorized modification can be detected through hash verification.</p>
             </div>
           </div>
           <div class="step-item">
@@ -268,8 +268,8 @@
       <div class="features-grid">
         <div class="feature-card">
           <div class="feat-icon">🔗</div>
-          <h3>Tamper-Proof Audit Records</h3>
-          <p>Every entry is cryptographically signed and chained. Historical data cannot be modified by anyone, including administrators.</p>
+          <h3>Append-Only Audit Records</h3>
+          <p>Every entry is secured with cryptographic hashing and stored in an append-only database. Historical audit records cannot be modified or deleted after submission.</p>
         </div>
         <div class="feature-card">
           <div class="feat-icon">📊</div>

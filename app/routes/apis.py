@@ -82,27 +82,57 @@ def audit_access():
             "error": "Invalid credentials"
         }), 401
 
+
     industry = Industry.query.filter_by(
         industry_id=industry_id
     ).first()
 
 
+    if not industry:
+        return jsonify({
+            "success": False,
+            "error": "Industry not found"
+        }),404
+
+
+    # get latest audit report
+    latest_report = AuditReport.query.filter_by(
+        industry_id=industry_id
+    ).order_by(
+        AuditReport.submitted_at.desc()
+    ).first()
+
+
     session['loggedin_industry'] = industry_id
 
+
     return jsonify({
+
         "success": True,
-        "redirect_url": "/audit_report",
+
+        "redirect_url": f"/audit_report",
+
         "industry": {
+
             "industry_id": industry.industry_id,
             "name": industry.name,
             "type": industry.industry_type,
             "location": industry.location,
+
             "score": industry.bluecred_score,
             "pollution": industry.pollution_status,
-            "auditor": industry.auditor_id
+
+
+            # from audit_report now
+            "auditor": latest_report.auditor_id 
+                if latest_report else None,
+
+
+            "last_audit_date":
+                latest_report.submitted_at.strftime("%Y-%m-%d")
+                if latest_report else None
         }
     })
-
 
 @apis_bp.route('/api/industry/current', methods=['GET'])
 def current_industry():
@@ -139,7 +169,9 @@ def submit_report():
     m_waste = data["measurements"]["waste"]
     assessment = data["assessment"]
 
+
     report = AuditReport(
+
         industry_id=data["industry_id"],
         auditor_id=data["auditor_id"],
 
@@ -149,13 +181,13 @@ def submit_report():
         nox=m_air.get("nox", 0),
         co=m_air.get("co", 0),
 
-        ph=m_water.get("ph", 7),
-        bod=m_water.get("bod", 0),
-        cod=m_water.get("cod", 0),
-        tds=m_water.get("tds", 0),
+        ph=m_water.get("ph",7),
+        bod=m_water.get("bod",0),
+        cod=m_water.get("cod",0),
+        tds=m_water.get("tds",0),
 
-        chemical_waste_present=(m_water.get("chemical_waste_present") == "Yes"),
-        hazardous_waste=(m_waste.get("hazardous_generated") == "Yes"),
+        chemical_waste_present=(m_water.get("chemical_waste_present")=="Yes"),
+        hazardous_waste=(m_waste.get("hazardous_generated")=="Yes"),
 
         treatment_facility=m_waste.get("treatment_facility"),
         disposal_method=m_waste.get("disposal_method_details"),
@@ -166,25 +198,40 @@ def submit_report():
         auditor_remarks=assessment.get("remarks"),
 
         report_hash=generate_hash(data)
+
     )
 
+
     db.session.add(report)
+
+    # generate database id first
+    db.session.flush()
+
+
+    # NOW save report id in DB
+    report.report_id = f"REP-{report.id:06d}"
+
+
     db.session.commit()
 
-    # =========================
-    # STORE ONLY SUMMARY IN SESSION
-    # =========================
+
+
     session["audit_result"] = {
-        "report_id": f"REP-{report.id:06d}",
+
+        "report_id": report.report_id,
         "report_hash": report.report_hash,
         "submitted_at": str(report.submitted_at),
         "industry_id": report.industry_id,
         "auditor_id": report.auditor_id
+
     }
 
+
     return jsonify({
-        "success": True,
-        "redirect_url": "/thankyou"
+
+        "success":True,
+        "redirect_url":"/thankyou"
+
     })
 
 
@@ -267,5 +314,69 @@ def get_industry_reports(industry_id):
         "success":True,
         "total_reports":len(data),
         "reports":data
+
+    })
+
+@apis_bp.route('/api/audit/report/<industry_id>/<report_id>')
+def get_report_details(industry_id, report_id):
+
+    report = AuditReport.query.filter_by(
+        industry_id=industry_id,
+        report_id=report_id
+    ).first()
+
+
+    if not report:
+        return jsonify({
+            "success":False,
+            "error":"Report not found"
+        }),404
+
+
+    return jsonify({
+
+        "success": True,
+
+        "report_id": report.report_id,
+        "industry_id": report.industry_id,
+        "auditor_id": report.auditor_id,
+
+
+        "air":{
+            "pm25": report.pm25,
+            "pm10": report.pm10,
+            "so2": report.so2,
+            "nox": report.nox,
+            "co": report.co
+        },
+
+
+        "water":{
+            "ph": report.ph,
+            "bod": report.bod,
+            "cod": report.cod,
+            "tds": report.tds
+        },
+
+
+        "waste":{
+            "chemical": report.chemical_waste_present,
+            "hazardous": report.hazardous_waste,
+            "facility": report.treatment_facility,
+            "method": report.disposal_method
+        },
+
+
+        "assessment":{
+            "observations": report.observations,
+            "recommendations": report.recommendations,
+            "decision": report.audit_decision,
+            "remarks": report.auditor_remarks
+        },
+
+
+        "submitted_at": str(report.submitted_at),
+
+        "hash": report.report_hash
 
     })
